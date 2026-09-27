@@ -1,0 +1,2306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COOPSEWA | Cooperative Gig Services Platform (SIH-26089)</title>
+  <meta name="description" content="Cooperative Gig Services Platform for Household & Community Services. Smart India Hackathon 2026 - SIH-26089, Team Hackerbit." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS for Hyperlocal 2km Geo-Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="mock-backend.js" defer></script>
+</head>
+<body>
+  <!-- ============================================================== -->
+  <!-- ENERGETIC WAVE AMBIENT BACKGROUND LAYER                        -->
+  <!-- ============================================================== -->
+  <div class="energetic-ambient-canvas" aria-hidden="true">
+    <div class="energy-glow-orb orb-saffron"></div>
+    <div class="energy-glow-orb orb-emerald"></div>
+    <div class="energy-glow-orb orb-cyan"></div>
+    <div class="energy-glow-orb orb-magenta"></div>
+    <div class="energy-glow-orb orb-purple"></div>
+    <div class="energy-wave-ribbon ribbon-1"></div>
+    <div class="energy-wave-ribbon ribbon-2"></div>
+    <div class="energy-wave-ribbon ribbon-3"></div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- FIRST-PAGE ROLE SELECTION GATEWAY MODAL (ADMIN / USER / WORKER)-->
+  <!-- ============================================================== -->
+  <div class="role-gateway-modal" id="roleGatewayModal">
+    <!-- Ambient Organic Green Wave Background -->
+    <div class="gateway-ambient-waves" aria-hidden="true">
+      <svg class="ambient-wave-svg" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-120 -60 C 220 40, 240 280, -20 460 C -180 560, -80 720, 80 820 L -120 920 Z" fill="url(#waveGrad1)" opacity="0.85"/>
+        <path d="M-60 -100 C 340 60, 280 340, 60 480 C -100 580, 20 780, 180 880 L -100 950 Z" fill="url(#waveGrad2)" opacity="0.55"/>
+        <defs>
+          <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#86efac" stop-opacity="0.7"/>
+            <stop offset="50%" stop-color="#bbf7d0" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#f0fdf4" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="80%" y2="80%">
+            <stop offset="0%" stop-color="#4ade80" stop-opacity="0.45"/>
+            <stop offset="60%" stop-color="#86efac" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Centered Clean Auth Gateway Matching Reference Photo (Horizontal 4-Portal Design) -->
+    <div class="xerox-gateway-card xerox-wide-card">
+      <!-- Centered Minimalist Emblem / Logo -->
+      <div class="xerox-logo-wrapper">
+        <div class="xerox-logo-box">
+          <div class="xerox-logo-symbol">
+            <span class="x-mark">⯎</span>
+            <span class="x-title">COOPSEWA</span>
+          </div>
+          <div class="xerox-logo-sub">GOVERNMENT COOPERATIVE ECOSYSTEM</div>
+        </div>
+      </div>
+
+      <!-- Horizontal 4-Portal Selector Strip on Starting Page -->
+      <div class="xerox-portals-horizontal" id="horizontalPortalsBar">
+        <!-- 1. Household User Portal -->
+        <button class="portal-h-card" id="hPortalCustomer" onclick="selectInitialRole('customer')" title="Household User: Discover & book verified workers within 7km">
+          <div class="ph-icon">🏠</div>
+          <div class="ph-details">
+            <span class="ph-badge">CITIZEN</span>
+            <h4 class="ph-title">User Portal</h4>
+            <p class="ph-desc">7km Geo-Radar, 10-step tracking & linked dispatch</p>
+          </div>
+          <div class="ph-action">Enter &rarr;</div>
+        </button>
+
+        <!-- 2. Cooperative Worker Portal -->
+        <button class="portal-h-card" id="hPortalWorker" onclick="selectInitialRole('worker')" title="Cooperative Craftsman Terminal: Live dispatch, earnings & insurance">
+          <div class="ph-icon">🛠️</div>
+          <div class="ph-details">
+            <span class="ph-badge">CRAFTSMAN</span>
+            <h4 class="ph-title">Worker Portal</h4>
+            <p class="ph-desc">Linked jobs, fuel mileage fair fare & payouts</p>
+          </div>
+          <div class="ph-action">Enter &rarr;</div>
+        </button>
+
+        <!-- 3. Operational Admin Portal -->
+        <button class="portal-h-card active" id="hPortalAdmin" onclick="setGatewayActiveTab('admin')" title="Operational Admin: Monitor every interaction & logged dispatch">
+          <div class="ph-icon">📊</div>
+          <div class="ph-details">
+            <span class="ph-badge">DISTRICT</span>
+            <h4 class="ph-title">Admin Portal</h4>
+            <p class="ph-desc">Audit live worker-user interactions & SOS</p>
+          </div>
+          <div class="ph-action ph-select-indicator">Selected ✓</div>
+        </button>
+
+        <!-- 4. Super Admin Portal -->
+        <button class="portal-h-card" id="hPortalSuperAdmin" onclick="setGatewayActiveTab('superadmin')" title="Super Admin: Master database governance & backups">
+          <div class="ph-icon">🏛️</div>
+          <div class="ph-details">
+            <span class="ph-badge ph-badge-apex">NATIONAL APEX</span>
+            <h4 class="ph-title">Super Admin</h4>
+            <p class="ph-desc">Manage regional databases & system schemas</p>
+          </div>
+          <div class="ph-action ph-select-indicator">Select &rarr;</div>
+        </button>
+      </div>
+
+      <!-- Sign In Section matching Reference Image Exactly -->
+      <div class="xerox-form-section">
+        <!-- Card Title (Dynamically switches between Admin and Super Admin) -->
+        <h2 class="xerox-card-title" id="gatewayCardTitle">Admin Sign in</h2>
+        <p class="xerox-card-subtitle" id="gatewayCardSubtitle">Operational District Federation Portal</p>
+
+        <!-- Clean Light Pill Input Field -->
+        <div class="xerox-input-group">
+          <input type="text" id="gatewayEmailInput" class="xerox-input-pill" placeholder="Email" value="admin.delhisouth@coopsewa.gov.in" autocomplete="username" />
+        </div>
+
+        <!-- Helper Links Row -->
+        <div class="xerox-links-row">
+          <a href="javascript:void(0)" class="xerox-text-link" onclick="handleGatewayForgot()">Forgot your Email ?</a>
+          <a href="javascript:void(0)" class="xerox-text-link xerox-portal-link" onclick="enterCitizenWorkerPortal()" title="Enter unified Household User & Worker Portal on the same page">Direct User & Worker Portal &rarr;</a>
+        </div>
+
+        <!-- Bright Green Action Button -->
+        <button class="xerox-btn-next" id="btnGatewayNext" onclick="handleGatewayNext()">Next</button>
+
+        <!-- Bottom Toggle Switcher Link -->
+        <div class="xerox-switch-footer" id="gatewaySwitchFooter">
+          <span>Login as Superadmin, </span>
+          <a href="javascript:void(0)" class="xerox-green-action-link" onclick="toggleAdminGatewayRole('superadmin')">Click here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top National & Hackathon Identity Banner -->
+  <div class="sih-banner">
+    <div class="container banner-inner">
+      <div class="sih-brand">
+        <span class="badge-sih">🇮🇳 SMART INDIA HACKATHON 2026</span>
+        <span class="badge-ps">PS ID: SIH-26089</span>
+        <span class="badge-theme">Theme: Agriculture, Food Tech & Rural Development</span>
+      </div>
+      <div class="sih-team">
+        <span>Team: <strong>Hackerbit</strong></span>
+        <span class="coop-vision">Affiliated: <em>Ministry of Cooperation • "Sahkar Se Samriddhi"</em></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <div class="logo-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <div class="title-row">
+              <h1>COOPSEWA</h1>
+              <span class="coop-pill">COOPERATIVE</span>
+              <span id="currentRoleBadge" class="active-role-pill user-pill">PORTAL: HOUSEHOLD USER</span>
+            </div>
+            <p class="tagline">Hyperlocal Gig Services with 95% Worker Retention • 4-Tier Governance Architecture</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: 4-Face Switcher & Split View Mode -->
+      <div class="view-mode-selector" id="viewModeSelector">
+        <button class="role-btn switch-gate-btn" id="btnSwitchGateway" onclick="openRoleGateway()" title="Change Portal / Select Role">
+          <span class="role-icon">⇄</span>
+          <span class="role-label">Roles</span>
+        </button>
+        <button class="role-btn active" id="btnRoleCustomer" onclick="switchPortal('customer')" title="Household User: Discover & dispatch jobs to workers">
+          <span class="role-icon">🏠</span>
+          <span class="role-label">User Portal</span>
+        </button>
+        <button class="role-btn" id="btnRoleWorker" onclick="switchPortal('worker')" title="Craftsman Terminal: Linked job dispatches & OTP">
+          <span class="role-icon">🛠️</span>
+          <span class="role-label">Worker Portal</span>
+          <span class="badge-alert-dot hidden" id="workerNotificationDot"></span>
+        </button>
+        <button class="role-btn" id="btnRoleAdmin" onclick="switchPortal('admin')" title="District Federation: Monitor all worker/user interactions & dispatch audits">
+          <span class="role-icon">📊</span>
+          <span class="role-label">Operational Admin</span>
+        </button>
+        <button class="role-btn" id="btnRoleSuperAdmin" onclick="switchPortal('superadmin')" title="Master Database & System Administration">
+          <span class="role-icon">🏛️</span>
+          <span class="role-label">Super Admin</span>
+        </button>
+        <button class="role-btn split-toggle-btn" id="btnToggleSplit" onclick="toggleSplitView()" title="Show User & Worker side-by-side for live linked dispatch demo">
+          <span class="role-icon">⚡</span>
+          <span class="role-label">Split Demo</span>
+        </button>
+        <button class="role-btn landscape-toggle-btn" id="btnToggleLandscape" onclick="toggleForceLandscape()" title="Force Laptop Wide Landscape View">
+          <span class="role-icon">💻</span>
+          <span class="role-label">Laptop Landscape</span>
+        </button>
+      </div>
+
+      <!-- Right: Utility Controls & User Badge -->
+      <div class="nav-controls">
+        <!-- 12+ Language Selector -->
+        <div class="lang-selector-wrap">
+          <select id="langSelector" class="lang-dropdown" onchange="changeLanguage(this.value)">
+            <option value="en">🌐 English</option>
+            <option value="hi">🌐 हिन्दी (Hindi)</option>
+            <option value="ta">🌐 தமிழ் (Tamil)</option>
+            <option value="te">🌐 తెలుగు (Telugu)</option>
+            <option value="mr">🌐 मराठी (Marathi)</option>
+            <option value="bn">🌐 বাংলা (Bengali)</option>
+            <option value="gu">🌐 ગુજરાતી (Gujarati)</option>
+            <option value="kn">🌐 ಕನ್ನಡ (Kannada)</option>
+          </select>
+        </div>
+
+        <!-- Emergency SOS Button -->
+        <button class="btn-sos" onclick="triggerEmergencySOS()" title="Emergency SOS to Cooperative Welfare Dispatch & Police">
+          <span class="sos-pulse"></span>
+          <span>🚨 SOS</span>
+        </button>
+
+        <!-- Dynamic User Auth Button -->
+        <div class="auth-user-box" id="authUserBox">
+          <button class="btn-auth-trigger" id="btnAuthTrigger" onclick="openAuthModal()">
+            <span class="auth-avatar" id="navAvatar">👤</span>
+            <span class="auth-name" id="navUserName">Login / Register</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- ENERGETIC LIVE TICKER STRIP                                     -->
+  <!-- ============================================================== -->
+  <div class="energy-ticker-strip" aria-label="Live cooperative platform stats">
+    <div class="ticker-inner">
+      <span class="ticker-label">⚡ LIVE</span>
+      <div class="ticker-track">
+        <div class="ticker-content">
+          <span>🇮🇳 Smart India Hackathon 2026 • SIH-26089</span>
+          <span class="ticker-dot">●</span>
+          <span>🛠️ 72 Verified Cooperative Workers Online</span>
+          <span class="ticker-dot">●</span>
+          <span>📊 Grade A (75+ jobs) • Grade B (50+ jobs) • Grade C (20+ jobs)</span>
+          <span class="ticker-dot">●</span>
+          <span>💰 95% Earnings Direct to Workers • 5% Cooperative Fund</span>
+          <span class="ticker-dot">●</span>
+          <span>🌿 8 Trades: Carpentry • Gardening • Plumbing • Electrical • AC Repair • Painting • Masonry • Cleaning</span>
+          <span class="ticker-dot">●</span>
+          <span>⚖️ Dynamic Fair-Fare: Certificate + Rating + Distance Based Pricing</span>
+          <span class="ticker-dot">●</span>
+          <span>📍 2km Hyperlocal Geo-Radar • DL-South Zone • Zero Exploitation Guarantee</span>
+          <span class="ticker-dot">●</span>
+          <span>🏛️ Affiliated: Ministry of Cooperation • "Sahkar Se Samriddhi"</span>
+          <span class="ticker-dot">●</span>
+          <!-- Repeat for seamless loop -->
+          <span>🇮🇳 Smart India Hackathon 2026 • SIH-26089</span>
+          <span class="ticker-dot">●</span>
+          <span>🛠️ 72 Verified Cooperative Workers Online</span>
+          <span class="ticker-dot">●</span>
+          <span>📊 Grade A (75+ jobs) • Grade B (50+ jobs) • Grade C (20+ jobs)</span>
+          <span class="ticker-dot">●</span>
+          <span>💰 95% Earnings Direct to Workers • 5% Cooperative Fund</span>
+          <span class="ticker-dot">●</span>
+          <span>🌿 8 Trades: Carpentry • Gardening • Plumbing • Electrical • AC Repair • Painting • Masonry • Cleaning</span>
+          <span class="ticker-dot">●</span>
+          <span>⚖️ Dynamic Fair-Fare: Certificate + Rating + Distance Based Pricing</span>
+          <span class="ticker-dot">●</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Split View Container / Dynamic Workspace -->
+  <main class="app-workspace" id="appWorkspace">
+
+
+    <!-- ============================================== -->
+    <!-- PORTAL 1: CUSTOMER (HOUSEHOLD) EXPERIENCE      -->
+    <!-- ============================================== -->
+    <section class="portal-pane customer-pane" id="customerPortal">
+      <div class="pane-header customer-header">
+        <div class="pane-title-wrap">
+          <div class="badge-role-tag customer-tag">HOUSEHOLD PORTAL (PRIMARY FACE 1)</div>
+          <h2 data-i18n="household_title">On-Demand Verified Cooperative Services</h2>
+          <p class="pane-sub">Real-time worker discovery within an expanded <strong>7km radius</strong> • 0% exploitation</p>
+        </div>
+        <div class="live-status-chip">
+          <span class="pulse-green"></span>
+          <span id="geoStatusText">7.0 km Radar Active (DL-South Zone)</span>
+        </div>
+      </div>
+
+      <!-- 1-Tap Booking & AI Matching Drawer / Confirmation -->
+      <div class="booking-dock" id="bookingDock">
+        <div class="dock-header">
+          <div class="selected-srv-meta">
+            <span class="dock-srv-icon" id="dockSrvIcon">🌊</span>
+            <div>
+              <h4 id="dockSrvTitle">Monsoon Plumbing & Drainage</h4>
+              <p id="dockSrvSub">Dispatches closest Grade A/B cooperative worker within 7km</p>
+            </div>
+          </div>
+          <div class="dock-pricing-breakdown">
+            <div class="breakdown-tag">
+              <span>Standard Fare: <strong id="dockBasePrice">₹400</strong></span>
+              <span class="coop-fee-note">(Cooperative 5% Fee: ₹20 • Worker Share 95%: ₹380)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dock-details-row">
+          <div class="input-inline">
+            <label>Service Address / Landmark:</label>
+            <input type="text" id="customerAddressInput" value="Flat 402, Green Valley Apts, Sector 14 (Near Coop Bank)" class="form-input" />
+          </div>
+          <div class="input-inline">
+            <label>Problem Description (Optional):</label>
+            <input type="text" id="customerNotesInput" placeholder="e.g. Main kitchen pipe valve leaking heavily" class="form-input" />
+          </div>
+          <div class="dock-action-wrap">
+            <button class="btn-dispatch" id="btnDispatchJob" onclick="initiateJobRequest()">
+              <span class="btn-icon">⚡</span>
+              <span>1-Tap AI Worker Dispatch</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Service Lifecycle Dashboard (Appears when a job is active) -->
+      <div class="active-lifecycle-card hidden" id="customerLifecycleCard">
+        <div class="lifecycle-head">
+          <div class="status-indicator">
+            <span class="pulse-orange" id="lifecyclePulse"></span>
+            <div>
+              <span class="stage-tag" id="lifecycleStageTag">STEP 3 / 10 • AI MATCHING</span>
+              <h3 id="lifecycleTitle">Matching with Closest Cooperative Worker...</h3>
+            </div>
+          </div>
+          <div class="job-id-tag" id="activeJobIdBadge">Job #COOP-8921</div>
+        </div>
+
+        <!-- 10-Step Progress Tracker based on PDF Architecture -->
+        <div class="stepper-horizontal">
+          <div class="step-node active" id="st1"><span>1</span><label>Reg</label></div>
+          <div class="step-node active" id="st2"><span>2</span><label>Request</label></div>
+          <div class="step-node active" id="st3"><span>3</span><label>AI Match</label></div>
+          <div class="step-node" id="st4"><span>4</span><label>Notify</label></div>
+          <div class="step-node" id="st5"><span>5</span><label>Accept</label></div>
+          <div class="step-node" id="st6"><span>6</span><label>Nav/ETA</label></div>
+          <div class="step-node" id="st7"><span>7</span><label>OTP & Proof</label></div>
+          <div class="step-node" id="st8"><span>8</span><label>Payment</label></div>
+          <div class="step-node" id="st9"><span>9</span><label>Rating</label></div>
+          <div class="step-node" id="st10"><span>10</span><label>Grade Cert</label></div>
+        </div>
+
+        <!-- Lifecycle Content Body -->
+        <div class="lifecycle-content-box" id="customerLifecycleContent">
+          <!-- Populated dynamically: Assigned Worker info, OTP security box, Tracking countdown, Payment button, Rating modal -->
+        </div>
+      </div>
+
+      <!-- Hyperlocal 7km Geo-Radar & Interactive Leaflet Map -->
+      <div class="radar-card">
+        <div class="radar-card-header">
+          <div class="radar-info">
+            <span class="radar-icon">📡</span>
+            <div>
+              <h3>Hyperlocal Worker Discovery Radar (<span class="highlight-dist">7 km Radius</span>)</h3>
+              <p>NCCT & Labour Cooperative Federation Verified Members currently within walking/quick commute distance</p>
+            </div>
+          </div>
+          <div class="radar-stats-pills">
+            <span class="stat-pill"><strong id="workersCount">6</strong> Certified Workers Nearby</span>
+            <span class="stat-pill green">Avg Response: <strong>4.2 mins</strong></span>
+          </div>
+        </div>
+        
+        <div class="map-and-radar-grid">
+          <!-- Interactive Map Container -->
+          <div class="leaflet-map-wrapper">
+            <div id="radarMap" class="geo-map"></div>
+            <div class="map-overlay-legend">
+              <span class="leg-item"><span class="leg-dot grade-a"></span> Grade A (Master)</span>
+              <span class="leg-item"><span class="leg-dot grade-b"></span> Grade B (Skilled)</span>
+              <span class="leg-item"><span class="leg-dot grade-c"></span> Grade C (Apprentice)</span>
+              <span class="leg-item"><span class="leg-dot user-dot"></span> Your Home (0m)</span>
+            </div>
+          </div>
+
+          <!-- Nearby Workers Quick Carousel / List -->
+          <div class="nearby-workers-sidebar">
+            <div class="sidebar-head">
+              <h4>Available in 7km Perimeter</h4>
+              <button class="btn-text-action" onclick="refreshNearbyWorkers()">↻ Refresh</button>
+            </div>
+            <div class="nearby-workers-list" id="nearbyWorkersList">
+              <!-- Dynamically Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Categories Grid with Seasonal Demand Highlights -->
+      <div class="services-section">
+        <div class="section-title-bar">
+          <div>
+            <h3>Hyperlocal Household Categories</h3>
+            <p>AI-Optimized Fair-Rate Cooperative Booking</p>
+          </div>
+          <div class="fair-wage-notice">
+            <span class="heart-icon">🤝</span>
+            <span>CoopSewa takes only <strong>5% fee</strong> vs <strong>35% by private apps</strong>. Workers retain 95%!</span>
+          </div>
+        </div>
+
+        <div class="category-grid">
+          <div class="service-card active-card" onclick="selectService('plumbing', 'Monsoon Plumbing & Drainage', 400, '🌊')">
+            <span class="surge-badge monsoon-badge">⚡ High Monsoon Need</span>
+            <div class="srv-icon">🌊</div>
+            <h4>Plumbing & Drainage</h4>
+            <p>Pipe burst, tap leaks, drain unblocking, water pump servicing</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹400</span>
+              <span class="worker-earn-tag">Worker gets ₹380</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('electrical', 'Emergency Electrical & Wiring', 350, '⚡')">
+            <div class="srv-icon">⚡</div>
+            <h4>Electrical & Wiring</h4>
+            <p>MCB trips, short circuits, fan/switchboard, inverter backup</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹350</span>
+              <span class="worker-earn-tag">Worker gets ₹332</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('ac', 'Summer AC & Refrigerator Repair', 550, '❄️')">
+            <span class="surge-badge summer-badge">☀️ Pre-Season Saver</span>
+            <div class="srv-icon">❄️</div>
+            <h4>AC & Refrigeration</h4>
+            <p>Gas refilling, coil cleaning, compressor check, cooling fault</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹550</span>
+              <span class="worker-earn-tag">Worker gets ₹522</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('carpentry', 'Carpentry & Furniture Repair', 450, '🪚')">
+            <div class="srv-icon">🪚</div>
+            <h4>Carpentry & Furniture</h4>
+            <p>Door hinges, custom wood joinery, furniture repairs, shelf mounts</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹450</span>
+              <span class="worker-earn-tag">Worker gets ₹427</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('gardening', 'Gardening & Lawn Maintenance', 420, '🌱')">
+            <span class="surge-badge eco-badge">🌿 Organic Care</span>
+            <div class="srv-icon">🌱</div>
+            <h4>Gardening & Landscaping</h4>
+            <p>Lawn mowing, hedge trimming, terrace gardens, organic pest spray</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹420</span>
+              <span class="worker-earn-tag">Worker gets ₹399</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('painting', 'House Painting & Whitewash', 500, '🎨')">
+            <div class="srv-icon">🎨</div>
+            <h4>House Painting & Damp Proof</h4>
+            <p>Wall putty, waterproof primer, royal texture, door enamel spray</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹500</span>
+              <span class="worker-earn-tag">Worker gets ₹475</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('masonry', 'Masonry & Tile Construction', 480, '🧱')">
+            <div class="srv-icon">🧱</div>
+            <h4>Masonry & Tile Work</h4>
+            <p>Tile fixing, brickwork, cement plastering, damp seepage repair</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹480</span>
+              <span class="worker-earn-tag">Worker gets ₹456</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('cleaning', 'Deep Cleaning & Pest Shield', 600, '🧹')">
+            <div class="srv-icon">🧹</div>
+            <h4>Community Cleaning</h4>
+            <p>Water tank sterilization, floor deep scrub, bio-pest control</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹600</span>
+              <span class="worker-earn-tag">Worker gets ₹570</span>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="selectService('appliance', 'Domestic Appliance Mechanic', 380, '🔧')">
+            <div class="srv-icon">🔧</div>
+            <h4>Appliance Mechanic</h4>
+            <p>Washing machine, microwave, geyser, mixer-grinder tuneup</p>
+            <div class="card-footer-price">
+              <span class="price-val">₹380</span>
+              <span class="worker-earn-tag">Worker gets ₹361</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- DYNAMIC FAIR-FARE CALCULATOR & ALGORITHMIC ESTIMATOR           -->
+      <!-- ============================================================== -->
+      <div class="fare-estimator-card" id="fareEstimatorCard">
+        <div class="fe-header">
+          <div class="fe-title-box">
+            <div class="badge-role-tag" style="background: rgba(249, 115, 22, 0.15); color: var(--primary-saffron-light); border: 1px solid rgba(249, 115, 22, 0.3);">
+              DYNAMIC COOPERATIVE FARE ENGINE
+            </div>
+            <h3>⚡ Transparent Dynamic Fair-Fare Calculator</h3>
+            <p class="fe-sub">
+              Fare is computed mathematically using <strong>Worker Certificate Tier (Grade A/B/C)</strong> + <strong>Customer Reviews &amp; Ratings</strong> + <strong>Distance Traveled (km)</strong>. 100% transparent algorithmic pricing with zero hidden surge.
+            </p>
+          </div>
+          <div class="fe-badge-pill">
+            <span class="pulse-green"></span>
+            <span>Labour Cooperative Mandate • 95% to Worker</span>
+          </div>
+        </div>
+
+        <div class="fe-grid">
+          <!-- Left: Input Controls -->
+          <div class="fe-controls">
+            <!-- Trade Selector -->
+            <div class="fe-control-group">
+              <label class="fe-label">1. Select Working Area / Trade:</label>
+              <select id="feTradeSelect" class="fe-select" onchange="updateDynamicFareEstimator()">
+                <option value="carpentry" selected>🪚 Carpentry &amp; Woodwork (Base ₹280)</option>
+                <option value="gardening">🌱 Gardening &amp; Landscaping (Base ₹260)</option>
+                <option value="plumbing">🌊 Plumbing &amp; Drainage (Base ₹270)</option>
+                <option value="electrical">⚡ Electrical &amp; Wiring (Base ₹260)</option>
+                <option value="painting">🎨 Painting &amp; Whitewashing (Base ₹240)</option>
+                <option value="masonry">🧱 Masonry &amp; Civil Tile (Base ₹250)</option>
+                <option value="cleaning">🧹 Sanitization &amp; Deep Cleaning (Base ₹200)</option>
+                <option value="appliance">❄️ Appliance Mechanics (Base ₹300)</option>
+              </select>
+            </div>
+
+            <!-- Certificate Tier Selector -->
+            <div class="fe-control-group">
+              <label class="fe-label">2. Worker Certificate Tier (Accredited by NCCT):</label>
+              <div class="fe-tier-buttons" id="feTierButtons">
+                <button type="button" class="fe-tier-btn active" data-grade="A" onclick="setEstimatorGrade('A')">
+                  <span class="btn-tier-tag grade-a">Grade A</span>
+                  <strong>Master (>75 Gigs)</strong>
+                  <small>+25% Skill Multiplier</small>
+                </button>
+                <button type="button" class="fe-tier-btn" data-grade="B" onclick="setEstimatorGrade('B')">
+                  <span class="btn-tier-tag grade-b">Grade B</span>
+                  <strong>Skilled (>50 Gigs)</strong>
+                  <small>+10% Verified Multiplier</small>
+                </button>
+                <button type="button" class="fe-tier-btn" data-grade="C" onclick="setEstimatorGrade('C')">
+                  <span class="btn-tier-tag grade-c">Grade C</span>
+                  <strong>Certified (>20 Gigs)</strong>
+                  <small>1.00x Base Multiplier</small>
+                </button>
+              </div>
+            </div>
+
+            <!-- Distance Slider -->
+            <div class="fe-control-group">
+              <div class="fe-slider-head">
+                <label class="fe-label">3. Travel Distance from Worker to Home:</label>
+                <span class="fe-slider-val"><strong id="feDistanceVal">1.5 km</strong> (<span id="feEtaVal">~11 mins ETA</span>)</span>
+              </div>
+              <input type="range" id="feDistanceInput" min="0.2" max="15.0" step="0.1" value="1.5" class="fe-range-slider" oninput="updateDynamicFareEstimator()" />
+              <div class="slider-markers">
+                <span>0.2km (Walking)</span>
+                <span>2.0km (Radar)</span>
+                <span>5.0km (Local Cluster)</span>
+                <span>15.0km (Sub-district)</span>
+              </div>
+            </div>
+
+            <!-- Customer Reviews & Rating Slider -->
+            <div class="fe-control-group">
+              <div class="fe-slider-head">
+                <label class="fe-label">4. Worker Rating &amp; Review History:</label>
+                <span class="fe-slider-val"><strong id="feRatingVal">4.90 ★</strong> (<span id="feReviewsVal">140+ Reviews</span>)</span>
+              </div>
+              <input type="range" id="feRatingInput" min="4.2" max="5.0" step="0.05" value="4.90" class="fe-range-slider" oninput="updateDynamicFareEstimator()" />
+              <div class="slider-markers">
+                <span>4.2★ (Good)</span>
+                <span>4.5★ (Very Good)</span>
+                <span>4.8★ (Excellent)</span>
+                <span>5.0★ (Flawless)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Itemized Algorithmic Fare Receipt -->
+          <div class="fe-receipt-card">
+            <div class="fe-receipt-head">
+              <div class="receipt-icon">🧾</div>
+              <div>
+                <h4>Algorithmic Transparent Bill</h4>
+                <p>Formula: (Base × Cert × Rating) + (Distance × Rate)</p>
+              </div>
+            </div>
+
+            <div class="fe-receipt-lines">
+              <div class="receipt-row">
+                <span class="row-label">🛠️ Trade Base Minimum Wage</span>
+                <span class="row-val" id="feBillBase">₹280</span>
+              </div>
+              <div class="receipt-row">
+                <span class="row-label">🏆 Certificate Grade <span id="feBillGradeBadge">A</span> Multiplier (<span id="feBillGradeMult">1.25x</span>)</span>
+                <span class="row-val green" id="feBillGradeBonus">+₹70</span>
+              </div>
+              <div class="receipt-row">
+                <span class="row-label">⭐ Rating &amp; Reviews Factor (<span id="feBillRatingScore">4.90★</span>)</span>
+                <span class="row-val green" id="feBillRatingBonus">+₹43</span>
+              </div>
+              <div class="receipt-row">
+                <span class="row-label">📍 Distance Transit Charge (<span id="feBillDistKm">1.5 km</span> @ ₹<span id="feBillRateKm">20</span>/km)</span>
+                <span class="row-val" id="feBillDistCharge">+₹30</span>
+              </div>
+              <div class="receipt-divider"></div>
+              <div class="receipt-row total-row">
+                <span class="row-label"><strong>Total Customer Fare</strong></span>
+                <span class="row-val total-price" id="feBillTotal">₹423</span>
+              </div>
+            </div>
+
+            <div class="fe-split-box">
+              <div class="split-col worker-split">
+                <span class="split-lbl">👷 Worker Share (95%)</span>
+                <strong class="split-amt green" id="feBillWorkerShare">₹402</strong>
+                <small>Direct to worker wallet</small>
+              </div>
+              <div class="split-col coop-split">
+                <span class="split-lbl">🏛️ Cooperative Fund (5%)</span>
+                <strong class="split-amt blue" id="feBillCoopShare">₹21</strong>
+                <small>PMSBY, Pension &amp; Tools</small>
+              </div>
+            </div>
+
+            <div class="fe-actions">
+              <button class="btn-fe-filter" onclick="applyEstimatorFilterToDirectory()">
+                <span>🎯 View Matching Certified Workers in Directory</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- COOPERATIVE WORKING AREAS & VERIFIED WORKERS DIRECTORY         -->
+      <!-- ============================================================== -->
+      <div class="workers-directory-section" id="workersDirectorySection">
+        <div class="directory-header-bar">
+          <div>
+            <div class="badge-role-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--coop-green-light); border: 1px solid var(--border-green);">
+              COOPERATIVE CRAFTSMEN DIRECTORY
+            </div>
+            <h3>Verified Cooperative Workers by Trade</h3>
+            <p class="directory-sub">
+              Explore certified <strong>Carpenters</strong>, <strong>Gardeners</strong>, <strong>Plumbers</strong>, <strong>Electricians</strong>, and cooperative members with accredited <strong>Grade A (&gt;75 Gigs)</strong>, <strong>Grade B (&gt;50 Gigs)</strong>, and <strong>Grade C (&gt;20 Gigs)</strong> certificates. Minimum 3 workers per certificate category.
+            </p>
+          </div>
+          <div class="directory-stats-chip">
+            <span class="pulse-green"></span>
+            <span id="directoryCountBadge">72 Verified Workers (3+ Per Certificate Category)</span>
+          </div>
+        </div>
+
+        <!-- Filter & Search Control Bar -->
+        <div class="directory-controls-bar">
+          <!-- Search Input -->
+          <div class="dir-search-wrap">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="searchWorkerInput" 
+              class="dir-search-input" 
+              placeholder="Search by carpenter, gardener, plumber, name, skill, or Coop ID..."
+              oninput="handleWorkerSearch(this.value)" 
+            />
+          </div>
+
+          <!-- Grade Filter Pills -->
+          <div class="grade-filter-group">
+            <span class="filter-label">Certificate Tier:</span>
+            <button class="grade-filter-btn active" data-grade="all" onclick="filterWorkersByGrade('all')">All Certificates</button>
+            <button class="grade-filter-btn btn-grade-a" data-grade="A" onclick="filterWorkersByGrade('A')">🏆 Grade A (&gt;75 Gigs)</button>
+            <button class="grade-filter-btn btn-grade-b" data-grade="B" onclick="filterWorkersByGrade('B')">🥈 Grade B (&gt;50 Gigs)</button>
+            <button class="grade-filter-btn btn-grade-c" data-grade="C" onclick="filterWorkersByGrade('C')">🥉 Grade C (&gt;20 Gigs)</button>
+          </div>
+        </div>
+
+        <!-- Category Filter Scrollable Tabs -->
+        <div class="category-filter-bar">
+          <button class="cat-filter-btn active" data-category="all" onclick="filterWorkersByCategory('all')">
+            <span>🌐 All Working Areas</span>
+          </button>
+          <button class="cat-filter-btn" data-category="carpentry" onclick="filterWorkersByCategory('carpentry')">
+            <span>🪚 Carpenters (Woodwork)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="gardening" onclick="filterWorkersByCategory('gardening')">
+            <span>🌱 Gardeners (Horticulture)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="plumbing" onclick="filterWorkersByCategory('plumbing')">
+            <span>🌊 Plumbers (Sanitary)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="electrical" onclick="filterWorkersByCategory('electrical')">
+            <span>⚡ Electricians (Wiring)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="painting" onclick="filterWorkersByCategory('painting')">
+            <span>🎨 Painters (Whitewash)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="masonry" onclick="filterWorkersByCategory('masonry')">
+            <span>🧱 Masons (Tile & Civil)</span>
+          </button>
+          <button class="cat-filter-btn" data-category="cleaning" onclick="filterWorkersByCategory('cleaning')">
+            <span>🧹 Sanitization & Deep Clean</span>
+          </button>
+          <button class="cat-filter-btn" data-category="appliance" onclick="filterWorkersByCategory('appliance')">
+            <span>❄️ Appliance Mechanics</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Grid of Worker Cards -->
+        <div class="workers-directory-grid" id="workersDirectoryGrid">
+          <!-- Populated by renderWorkerDirectory() in app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- PORTAL 2: WORKER (COOPERATIVE MEMBER)          -->
+    <!-- ============================================== -->
+    <section class="portal-pane worker-pane" id="workerPortal">
+      <div class="pane-header worker-header">
+        <div class="pane-title-wrap">
+          <div class="badge-role-tag worker-tag">COOPERATIVE WORKER APP</div>
+          <h2 data-i18n="worker_title">Cooperative Craftsman Terminal</h2>
+          <p class="pane-sub">Zero Middleman Commission • 95% Direct Payouts • Full Social Security</p>
+        </div>
+        <div class="worker-duty-switch">
+          <span class="duty-label">Duty Status:</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="workerDutyToggle" checked onchange="toggleWorkerDuty(this.checked)">
+            <span class="slider round"></span>
+          </label>
+          <span class="duty-text" id="dutyText">ONLINE (Ready for 7km Dispatch)</span>
+        </div>
+      </div>
+
+      <!-- Worker Dynamic Certification & Grade Profile Card (PDF Feature) -->
+      <div class="worker-profile-hero">
+        <div class="profile-main-info">
+          <div class="worker-avatar-badge">
+            <span class="big-avatar">👨‍🔧</span>
+            <span class="grade-pill-floating grade-a" id="workerGradeBadge">GRADE A</span>
+          </div>
+          <div class="worker-cred">
+            <div class="name-tier">
+              <h3 id="workerNameHeader">Ramesh Kumar</h3>
+              <span class="cert-title">Certified Master Plumber & Sanitary Tech</span>
+            </div>
+            <div class="coop-meta-row">
+              <span class="meta-tag">🏛️ Society: <strong>Delhi Labour Coop Federation #41</strong></span>
+              <span class="meta-tag">🆔 Member ID: <strong>COOP-26089-RK</strong></span>
+              <span class="meta-tag verified">✅ Aadhaar & Police Verified</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="worker-metrics-grid">
+          <div class="metric-card">
+            <span class="m-label">Job Rating</span>
+            <div class="m-val-row">
+              <span class="m-val" id="workerRatingVal">4.92</span>
+              <span class="stars">★★★★★</span>
+            </div>
+            <span class="m-sub">148 Reviews</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-label">Jobs Completed</span>
+            <span class="m-val" id="workerJobsCount">156</span>
+            <span class="m-sub" id="workerJobsSub">Tier: Grade A (50+ Jobs)</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-label">A/B/C Grade Score</span>
+            <span class="m-val green" id="workerGradeScore">96 / 100</span>
+            <span class="m-sub">Eligible for Premium Fare</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-label">Response Time</span>
+            <span class="m-val">18s</span>
+            <span class="m-sub">Top 5% in District</span>
+          </div>
+        </div>
+
+        <!-- Dynamic A/B/C Certification Milestones Bar (From User Spec: C@10, B@25, A@50+) -->
+        <div class="cert-milestones-box">
+          <div class="cert-box-header">
+            <div class="cert-header-left">
+              <span class="cert-icon-emblem">🎖️</span>
+              <div>
+                <h4>Dynamic Cooperative Certification System</h4>
+                <p>Awarded by Labour Cooperative Federation based on verified completed gigs</p>
+              </div>
+            </div>
+            <button class="btn-view-cert" onclick="openCertificateModal()">
+              <span>🎓 View Official Certificate</span>
+            </button>
+          </div>
+
+          <!-- Milestones Visual Track -->
+          <div class="milestones-track-wrapper">
+            <div class="milestone-step-card" id="milestoneC">
+              <div class="ms-indicator">
+                <span class="ms-badge grade-c">GRADE C</span>
+                <span class="ms-status" id="statusC">UNLOCKED ✅</span>
+              </div>
+              <h5>More than 20 Jobs (&gt;20)</h5>
+              <p>Entry Certification • Standard Cooperative Rates</p>
+            </div>
+
+            <div class="milestone-step-card" id="milestoneB">
+              <div class="ms-indicator">
+                <span class="ms-badge grade-b">GRADE B</span>
+                <span class="ms-status" id="statusB">UNLOCKED ✅</span>
+              </div>
+              <h5>More than 50 Jobs (&gt;50)</h5>
+              <p>Skilled Craftsman • +10% Wage Rate & Priority 7km Radar</p>
+            </div>
+
+            <div class="milestone-step-card active-tier" id="milestoneA">
+              <div class="ms-indicator">
+                <span class="ms-badge grade-a">GRADE A</span>
+                <span class="ms-status" id="statusA">UNLOCKED 🏆</span>
+              </div>
+              <h5>More than 75 Jobs (&gt;75)</h5>
+              <p>Master Craftsman • Premium Pricing & Master Trainer</p>
+            </div>
+          </div>
+
+          <!-- Live Progress Towards Next Tier -->
+          <div class="cert-progress-status" id="certProgressStatus">
+            <div class="cert-prog-text">
+              <span id="certTierLabel"><strong>Current Status:</strong> Grade A Master Craftsman (114 Jobs)</span>
+              <span id="certNextTierNote" class="green">Highest Cooperative Master Level Achieved 🌟</span>
+            </div>
+            <div class="cert-progress-bar-bg">
+              <div class="cert-progress-bar-fill" id="certProgressBarFill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- Demo Quick Testing Simulator for SIH Judges -->
+          <div class="cert-demo-test-row">
+            <span class="test-label">⚡ SIH Jury Certification Test:</span>
+            <button class="btn-test-level" onclick="simulateWorkerTier(18)" title="Simulate 18 jobs (Probationary, 3 to Grade C)">18 Jobs (Pre-C)</button>
+            <button class="btn-test-level" onclick="simulateWorkerTier(21)" title="Simulate 21 jobs (>20: Grade C Unlocked)">21 Jobs (Grade C)</button>
+            <button class="btn-test-level" onclick="simulateWorkerTier(49)" title="Simulate 49 jobs (2 to Grade B)">49 Jobs (Pre-B)</button>
+            <button class="btn-test-level" onclick="simulateWorkerTier(51)" title="Simulate 51 jobs (>50: Grade B Unlocked)">51 Jobs (Grade B)</button>
+            <button class="btn-test-level" onclick="simulateWorkerTier(74)" title="Simulate 74 jobs (2 to Grade A)">74 Jobs (Pre-A)</button>
+            <button class="btn-test-level" onclick="simulateWorkerTier(76)" title="Simulate 76 jobs (>75: Grade A Unlocked)">76 Jobs (Grade A)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incoming Job Dispatch Alert (30-Second Countdown from PDF Page 3 & 4) -->
+      <div class="dispatch-alert-banner hidden" id="workerDispatchAlert">
+        <div class="alert-top-bar">
+          <div class="alert-left">
+            <span class="bell-ringing">🔔</span>
+            <div>
+              <h4 class="alert-h4">NEW EMERGENCY DISPATCH REQUEST</h4>
+              <p>Hyperlocal Customer within 1.2 km • Direct Cooperative Assignment</p>
+            </div>
+          </div>
+          <div class="countdown-timer-circle" id="alertTimerCircle">
+            <span id="alertSecondsLeft">30</span>
+            <small>sec</small>
+          </div>
+        </div>
+
+        <div class="alert-job-details">
+          <div class="alert-item">
+            <span class="lbl">Category:</span>
+            <strong id="alertJobTitle">Monsoon Plumbing & Drainage</strong>
+          </div>
+          <div class="alert-item">
+            <span class="lbl">Customer Address:</span>
+            <strong id="alertJobAddress">Flat 402, Green Valley Apts, Sector 14</strong>
+          </div>
+          <div class="alert-item">
+            <span class="lbl">Distance & ETA:</span>
+            <strong class="green">1.2 km (approx 4 mins commute)</strong>
+          </div>
+          <div class="alert-item">
+            <span class="lbl">Your Direct Earnings (95%):</span>
+            <strong class="price-highlight" id="alertJobEarnings">₹380.00</strong>
+          </div>
+        </div>
+
+        <div class="alert-actions">
+          <button class="btn-accept-job" onclick="acceptDispatchedJob()">
+            <span>✅ ACCEPT JOB (30s Window)</span>
+          </button>
+          <button class="btn-decline-job" onclick="declineDispatchedJob()">
+            <span>Pass to Next Coop Worker</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Ongoing Job Execution Card for Worker -->
+      <div class="worker-job-active-card hidden" id="workerActiveJobCard">
+        <div class="card-head-bar">
+          <div class="job-status-chip">
+            <span class="pulse-blue"></span>
+            <span id="workerJobStatusText">En Route to Customer Location</span>
+          </div>
+          <span class="pin-dist-chip">📍 1.2 km away</span>
+        </div>
+
+        <div class="worker-action-steps" id="workerActionSteps">
+          <!-- Step 1: Navigation and Arrival -->
+          <div class="worker-step-box" id="wsNavBox">
+            <h4>Live Turn-by-Turn Navigation</h4>
+            <p>Customer: <strong id="wCustomerName">Priya Sharma</strong> (Green Valley Apts)</p>
+            <div class="sim-nav-bar">
+              <div class="nav-arrow">⬆️</div>
+              <div class="nav-instr">Turn left at Cooperative Milk Booth, continue 400m</div>
+              <div class="nav-eta">ETA: <strong id="navEtaTicker">3 mins</strong></div>
+            </div>
+            <button class="btn-primary" onclick="workerArrivedAtLocation()">
+              <span>📍 I Have Arrived at Customer Doorstep</span>
+            </button>
+          </div>
+
+          <!-- Step 2: OTP Verification & Work Start (PDF Page 3 Step 7) -->
+          <div class="worker-step-box hidden" id="wsOtpBox">
+            <h4>Customer Secure Job Verification</h4>
+            <p>Ask customer for their 4-digit security code before initiating work:</p>
+            <div class="otp-input-group">
+              <input type="text" id="workerOtpInput" maxlength="4" placeholder="Enter 4-Digit OTP (e.g. 5824)" class="otp-input" />
+              <button class="btn-verify-otp" onclick="verifyJobOTP()">Verify & Start Job</button>
+            </div>
+            <p class="otp-hint">Hint for demo: Customer OTP is displayed on Household screen (<strong id="demoOtpHint">5824</strong>)</p>
+          </div>
+
+          <!-- Step 3: Work Completion & Proof Upload -->
+          <div class="worker-step-box hidden" id="wsCompleteBox">
+            <h4>Service Completion & Photo Proof</h4>
+            <p>Work successfully carried out. Submit photo proof to generate GST invoice & release payment:</p>
+            <div class="photo-proof-sim">
+              <div class="proof-preview" id="proofPreview">
+                <span>📸 Photo: Repaired Valve & Pipe Sealed (Geotagged 28.542°N, 77.214°E)</span>
+              </div>
+              <button class="btn-submit-proof" onclick="workerCompletesService()">
+                <span>✅ Confirm Work Done & Request Payment</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worker Vehicle Mileage & Fuel/EV Calibration for Fair Pricing (Mandatory Cooperative Feature) -->
+      <div class="worker-vehicle-card" id="workerVehicleCalibration">
+        <div class="wv-head">
+          <div class="wv-icon">⛽</div>
+          <div class="wv-head-info">
+            <div class="badge-role-tag" style="background: rgba(232, 101, 10, 0.12); color: #c2410c; border: 1px solid rgba(232, 101, 10, 0.3);">
+              FAIR PRICE SUMMARIZATION ENGINE
+            </div>
+            <h4>Vehicle Fuel Mileage & Charging Capacity Calibration</h4>
+            <p>Your vehicle efficiency directly powers the fair-fare algorithm so you get fully reimbursed for transit expenditure across the 7km zone.</p>
+          </div>
+          <span class="wv-active-pill" id="wvActiveBadge">Active Rate: ₹22.50/km</span>
+        </div>
+
+        <div class="wv-body">
+          <div class="wv-question-prompt">
+            <span class="wv-q-number">Q</span>
+            <div class="wv-q-text">
+              <strong>What is your vehicle type, mileage per litre of petrol or battery charging capacity?</strong>
+              <p>The system transparently calculates your fair transit allowance added directly to customer bookings.</p>
+            </div>
+          </div>
+
+          <div class="wv-controls-grid">
+            <div class="wv-field">
+              <label for="wvVehicleType">1. Vehicle Category</label>
+              <select id="wvVehicleType" class="wv-select" onchange="onVehicleConfigChanged()">
+                <option value="petrol_bike" selected>🛵 Petrol Two-Wheeler (Motorcycle / Scooter)</option>
+                <option value="ev_scooter">⚡ Electric Two-Wheeler (EV Scooter)</option>
+                <option value="cng_auto">🛺 Auto / Mini-Van (CNG / Petrol)</option>
+                <option value="bicycle">🚲 Bicycle / Walking (Zero Fuel)</option>
+              </select>
+            </div>
+
+            <div class="wv-field" id="wvMileageFieldGroup">
+              <label for="wvMileageValue" id="wvMileageLabel">2. Mileage per Litre of Petrol (km/L)</label>
+              <div class="wv-input-unit">
+                <input type="number" id="wvMileageValue" min="10" max="100" step="1" value="45" class="wv-num-input" oninput="onVehicleConfigChanged()" />
+                <span class="wv-unit" id="wvMileageUnit">km/L</span>
+              </div>
+              <small class="wv-help-text" id="wvMileageHelp">Standard commuter motorcycle averages 40-55 km/L (Petrol ~₹96.72/L).</small>
+            </div>
+
+            <div class="wv-field" id="wvEvBatteryFieldGroup" style="display: none;">
+              <label for="wvBatteryKwh">Battery Capacity & Full-Charge Range</label>
+              <div class="wv-input-unit">
+                <input type="number" id="wvBatteryKwh" min="1" max="10" step="0.5" value="3.5" class="wv-num-input" oninput="onVehicleConfigChanged()" />
+                <span class="wv-unit">kWh (Range ~80km)</span>
+              </div>
+              <small class="wv-help-text">EV tariff rated at domestic green rate ₹8.00/kWh (~₹0.35/km running cost).</small>
+            </div>
+
+            <div class="wv-field">
+              <label>3. Fair Transit Payout Calibration</label>
+              <div class="wv-calculated-box">
+                <div class="calc-row">
+                  <span>Fuel Running Cost:</span>
+                  <strong id="wvRunningCost">₹2.15 / km</strong>
+                </div>
+                <div class="calc-row">
+                  <span>Vehicle Wear & Maintenance:</span>
+                  <strong id="wvWearCost">+₹4.50 / km</strong>
+                </div>
+                <div class="calc-row">
+                  <span>Transit Time Fair Wage:</span>
+                  <strong id="wvTransitWage">+₹15.85 / km</strong>
+                </div>
+                <div class="calc-divider"></div>
+                <div class="calc-row total-highlight">
+                  <span>Calculated Fare Transit Rate:</span>
+                  <strong class="green" id="wvFinalTransitRate">₹22.50 / km</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wv-footer-note">
+            <span>✅ Applied automatically across all your service bookings within the <strong>7km hyperlocal radius</strong>. Payout goes 100% to your wallet with zero commission.</span>
+            <button class="btn-save-vehicle" onclick="saveWorkerVehicleConfig()">💾 Save Vehicle Efficiency</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cooperative Welfare, Live Wallet & Social Security (PDF Page 2 & 4) -->
+      <div class="welfare-wallet-section">
+        <div class="section-title-bar">
+          <div>
+            <h3>Cooperative Worker Live Earnings & Welfare</h3>
+            <p>Itemized Payout Breakdown • 95% Guaranteed Direct Payout • Instant UPI Withdrawals</p>
+          </div>
+          <div class="badge-coop-verified">
+            <span>🏛️ Pradhan Mantri Social Security Compliant</span>
+          </div>
+        </div>
+
+        <div class="wallet-grid">
+          <!-- Balance Card -->
+          <div class="wallet-main-card">
+            <span class="w-label">Available Balance (Withdrawable via UPI)</span>
+            <div class="balance-display">
+              <span class="currency">₹</span>
+              <span class="amount" id="workerWalletBalance">14,850</span>
+              <span class="decimal">.00</span>
+            </div>
+            <div class="payout-row">
+              <span class="earnings-tag">Today's Earnings: <strong id="workerTodayEarn">₹1,240</strong></span>
+              <button class="btn-payout" onclick="withdrawFunds()">Instant UPI Transfer</button>
+            </div>
+            <div class="retention-guarantee">
+              <span class="shield">🛡️</span>
+              <span><strong>95.0% Guaranteed Retention:</strong> For every ₹100 earned, you keep ₹95. Only ₹5 supports your cooperative federation.</span>
+            </div>
+          </div>
+
+          <!-- All Earnings Comprehensive Ledger Breakdown -->
+          <div class="worker-earnings-summary-card">
+            <h4>All Earnings Breakdown & Summary</h4>
+            <div class="earnings-stat-rows">
+              <div class="earn-stat-item">
+                <span class="lbl">Total Career Gross Earnings:</span>
+                <strong class="val green" id="statGrossEarnings">₹64,280.00</strong>
+              </div>
+              <div class="earn-stat-item">
+                <span class="lbl">This Month's Take-Home (95% Direct):</span>
+                <strong class="val green" id="statMonthEarnings">₹28,640.00</strong>
+              </div>
+              <div class="earn-stat-item">
+                <span class="lbl">Transit & Fuel Reimbursed (Mileage Engine):</span>
+                <strong class="val blue" id="statTransitEarnings">₹3,420.00</strong>
+              </div>
+              <div class="earn-stat-item">
+                <span class="lbl">Grade A Master Craft Multiplier (+25%):</span>
+                <strong class="val saffron" id="statGradeBonus">₹7,850.00</strong>
+              </div>
+              <div class="earn-stat-item">
+                <span class="lbl">Customer Tips & Quality Rating Bonuses:</span>
+                <strong class="val green" id="statTipsEarnings">₹1,950.00</strong>
+              </div>
+              <div class="earn-stat-item total-earned">
+                <span class="lbl">Total Withdrawn to Bank Account:</span>
+                <strong class="val" id="statWithdrawnTotal">₹49,430.00</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insurance Timeline & Beneficiary Amount Coverage (Mandatory Cooperative Feature) -->
+        <div class="insurance-timeline-section">
+          <div class="it-head">
+            <div class="it-head-left">
+              <span class="it-icon">🛡️</span>
+              <div>
+                <h4>Worker Social Security & Insurance Timeline</h4>
+                <p>Track your active coverage, beneficiary payout limits, policy maturity and upcoming claim milestones</p>
+              </div>
+            </div>
+            <div class="it-status-chip">
+              <span class="pulse-green"></span>
+              <span>All 4 Schemes Fully Covered & Active</span>
+            </div>
+          </div>
+
+          <!-- Beneficiary Cards Grid -->
+          <div class="beneficiary-cards-grid">
+            <div class="ben-card">
+              <div class="ben-top">
+                <span class="ben-badge active">Active Policy</span>
+                <span class="ben-logo">🏛️ PMSBY</span>
+              </div>
+              <h5>Accidental Death & Disability Cover</h5>
+              <div class="ben-amount-box">
+                <span class="ben-amount-label">Beneficiary Claim Amount</span>
+                <strong class="ben-amount">₹2,00,000</strong>
+              </div>
+              <div class="ben-meta">
+                <span>Beneficiary Nominee: <strong>Sunita Devi (Wife)</strong></span>
+                <span>Annual Premium: <strong>₹20 / year</strong> (Co-op Subsidized)</span>
+                <span>Renewal Date: <strong>31 May 2027</strong></span>
+              </div>
+            </div>
+
+            <div class="ben-card">
+              <div class="ben-top">
+                <span class="ben-badge active">Cashless Card</span>
+                <span class="ben-logo">🏥 PM-JAY</span>
+              </div>
+              <h5>Ayushman Bharat Family Health Shield</h5>
+              <div class="ben-amount-box">
+                <span class="ben-amount-label">Beneficiary Hospitalization Limit</span>
+                <strong class="ben-amount">₹5,00,000 / yr</strong>
+              </div>
+              <div class="ben-meta">
+                <span>Covered Members: <strong>Self, Spouse & 2 Children</strong></span>
+                <span>Hospital Network: <strong>28,000+ Empanelled Hospitals</strong></span>
+                <span>E-Card Status: <strong>Aadhaar Linked (Active)</strong></span>
+              </div>
+            </div>
+
+            <div class="ben-card">
+              <div class="ben-top">
+                <span class="ben-badge saving">Growing Corpus</span>
+                <span class="ben-logo">📈 NPS Lite</span>
+              </div>
+              <h5>Cooperative Retirement Pension Fund</h5>
+              <div class="ben-amount-box">
+                <span class="ben-amount-label">Accumulated Corpus Beneficiary</span>
+                <strong class="ben-amount" id="benPensionVal">₹3,420 (Growing)</strong>
+              </div>
+              <div class="ben-meta">
+                <span>Contribution: <strong>5% Auto-Saved from Each Gig</strong></span>
+                <span>Projected Maturity (Age 60): <strong>₹12,40,000 + Pension</strong></span>
+                <span>PRAN Account: <strong>PRAN-26089-DL-41</strong></span>
+              </div>
+            </div>
+
+            <div class="ben-card">
+              <div class="ben-top">
+                <span class="ben-badge eligible">0% Interest</span>
+                <span class="ben-logo">🛠️ Tool Shield</span>
+              </div>
+              <h5>Tool Replacement & Emergency Credit</h5>
+              <div class="ben-amount-box">
+                <span class="ben-amount-label">Pre-Approved Micro-Credit Limit</span>
+                <strong class="ben-amount">₹25,000</strong>
+              </div>
+              <div class="ben-meta">
+                <span>Interest Rate: <strong>0% for 90 Days</strong></span>
+                <span>Eligible Tools: <strong>Makita, Bosch, Diagnostic Kits</strong></span>
+                <span>Collateral: <strong>None (Society Backed)</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chronological Insurance Timeline -->
+          <div class="timeline-wrapper">
+            <h5 class="timeline-title">📅 Policy Lifecycle & Contribution Milestones</h5>
+            <div class="horizontal-timeline">
+              <div class="tl-node passed">
+                <div class="tl-dot">✓</div>
+                <div class="tl-content">
+                  <span class="tl-date">15 Jan 2025</span>
+                  <strong>Enrollment & Verification</strong>
+                  <p>Aadhaar eKYC & PMSBY insurance activated upon cooperative joining.</p>
+                </div>
+              </div>
+              <div class="tl-node passed">
+                <div class="tl-dot">✓</div>
+                <div class="tl-content">
+                  <span class="tl-date">01 Apr 2025</span>
+                  <strong>PM-JAY Health Golden Card</strong>
+                  <p>Ayushman Bharat family card generated with ₹5 Lakh coverage.</p>
+                </div>
+              </div>
+              <div class="tl-node current">
+                <div class="tl-dot pulse-node">●</div>
+                <div class="tl-content">
+                  <span class="tl-date">Current Quarter</span>
+                  <strong>Active NPS Lite Savings</strong>
+                  <p>5% auto-deposit into pension corpus after every completed gig.</p>
+                </div>
+              </div>
+              <div class="tl-node upcoming">
+                <div class="tl-dot">○</div>
+                <div class="tl-content">
+                  <span class="tl-date">31 May 2027</span>
+                  <strong>Annual Auto-Renewal</strong>
+                  <p>Automated ₹20 premium deduction for ₹2,00,000 accident indemnity.</p>
+                </div>
+              </div>
+              <div class="tl-node upcoming">
+                <div class="tl-dot">○</div>
+                <div class="tl-content">
+                  <span class="tl-date">Retirement at 60</span>
+                  <strong>Pension Disbursement</strong>
+                  <p>Guaranteed monthly cooperative pension + lump-sum corpus payout.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- FACE 1: SUPER ADMIN PORTAL (MASTER DATABASE & ADMIN MANAGEMENT) -->
+    <!-- ============================================================== -->
+    <section class="portal-pane superadmin-pane hidden" id="superAdminPortal">
+      <div class="pane-header superadmin-header">
+        <div class="pane-title-wrap">
+          <div class="badge-role-tag superadmin-tag">APEX GOVERNANCE • TIER 1</div>
+          <h2>National Super Admin Central Database Console</h2>
+          <p class="pane-sub">Master database registry • Regional admin database management • Schema verification • Backup & audit ledger</p>
+        </div>
+        <div class="superadmin-kpi-summary">
+          <div class="kpi-pill">Connected Databases: <strong>8 Regional Nodes</strong></div>
+          <div class="kpi-pill kpi-pill-sec">Database Engine: <strong>Local/Distributed SQL-JSON v2.6</strong></div>
+          <button class="btn-export-backup" onclick="exportDatabaseBackup()">
+            <span>💾 Backup DB JSON</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Super Admin Command Bar -->
+      <div class="sa-command-bar">
+        <div class="sa-tabs-group">
+          <button class="sa-tab-btn active" id="saTabDatabases" onclick="switchSuperAdminTab('databases')">🗄️ Database Tables</button>
+          <button class="sa-tab-btn" id="saTabAdmins" onclick="switchSuperAdminTab('admins')">🛡️ Regional Admin Registry</button>
+          <button class="sa-tab-btn" id="saTabSync" onclick="switchSuperAdminTab('sync')">⚡ Sync & Health Monitor</button>
+        </div>
+        <div class="sa-actions-group">
+          <button class="btn-sa-action btn-sa-seed" onclick="seedSampleCoopDatabase()" title="Seed demo records for SIH jury demonstration">🌱 Seed Sample DB</button>
+          <button class="btn-sa-action btn-sa-sync" onclick="syncAllDatabasesNow()" title="Trigger multi-node sync">🔄 Sync All Nodes</button>
+          <button class="btn-sa-action btn-sa-danger" onclick="confirmResetAllDatabases()" title="Reset local storage databases">⚠️ Reset Tables</button>
+        </div>
+      </div>
+
+      <!-- Tab View 1: Database Tables & Records Explorer -->
+      <div class="sa-tab-content" id="saViewDatabases">
+        <!-- Database Metrics Cards -->
+        <div class="sa-metrics-grid">
+          <div class="sa-stat-card">
+            <span class="sa-stat-icon">👥</span>
+            <div class="sa-stat-info">
+              <span class="sa-stat-label">Users Table (`coopsewa_users`)</span>
+              <strong class="sa-stat-val" id="saCountUsers">1,248 Records</strong>
+              <span class="sa-stat-sub">Household clients & verified accounts</span>
+            </div>
+          </div>
+          <div class="sa-stat-card">
+            <span class="sa-stat-icon">🛠️</span>
+            <div class="sa-stat-info">
+              <span class="sa-stat-label">Workers Table (`coopsewa_workers`)</span>
+              <strong class="sa-stat-val" id="saCountWorkers">72 Active</strong>
+              <span class="sa-stat-sub">Grade A/B/C certified tradesmen</span>
+            </div>
+          </div>
+          <div class="sa-stat-card">
+            <span class="sa-stat-icon">📋</span>
+            <div class="sa-stat-info">
+              <span class="sa-stat-label">Jobs Ledger (`coopsewa_jobs`)</span>
+              <strong class="sa-stat-val" id="saCountJobs">4,912 Dispatches</strong>
+              <span class="sa-stat-sub">Full 10-step lifecycle records</span>
+            </div>
+          </div>
+          <div class="sa-stat-card">
+            <span class="sa-stat-icon">📜</span>
+            <div class="sa-stat-info">
+              <span class="sa-stat-label">Audit Logs (`coopsewa_audit_logs`)</span>
+              <strong class="sa-stat-val" id="saCountLogs">18,340 Events</strong>
+              <span class="sa-stat-sub">Every worker & user interaction</span>
+            </div>
+          </div>
+          <div class="sa-stat-card" style="cursor:pointer;" onclick="document.getElementById('saTableSelect').value='nodes'; renderSuperAdminTable('nodes');">
+            <span class="sa-stat-icon">🌐</span>
+            <div class="sa-stat-info">
+              <span class="sa-stat-label">National State Hubs (`coopsewa_nodes`)</span>
+              <strong class="sa-stat-val" style="color:var(--coop-gold);">8 City Nodes</strong>
+              <span class="sa-stat-sub">₹3.34 Cr Gross • 100% Online</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Selector and Record Viewer -->
+        <div class="sa-table-box">
+          <div class="sa-table-head">
+            <div class="sa-table-selector">
+              <label for="saTableSelect"><strong>Select Database Table to Inspect:</strong></label>
+              <select id="saTableSelect" class="form-input sa-select" onchange="renderSuperAdminTable(this.value)">
+                <option value="workers">coopsewa_workers (72 Certified Tradesmen & Soc IDs)</option>
+                <option value="users">coopsewa_users (Household Client Database - 18 Citizens)</option>
+                <option value="jobs">coopsewa_jobs (Active & Historic Dispatches - 24 Orders)</option>
+                <option value="logs">coopsewa_audit_logs (Granular Interaction Events - 20 Logs)</option>
+                <option value="admins">coopsewa_admins (8 District Admin Credentials & Hubs)</option>
+                <option value="nodes">coopsewa_regional_nodes (National City Hubs, Live Revenue & Worker Strength)</option>
+              </select>
+            </div>
+            <div class="sa-table-search" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+              <input type="text" id="saTableSearchInput" class="form-input" placeholder="🔍 Search any name, ID, phone, city..." oninput="filterSuperAdminTable(this.value)" style="min-width:240px;" />
+              <button class="btn-table-action" onclick="document.getElementById('saTableSelect').value='users'; renderSuperAdminTable('users');" style="padding:0.4rem 0.75rem;">👥 Users</button>
+              <button class="btn-table-action" onclick="document.getElementById('saTableSelect').value='jobs'; renderSuperAdminTable('jobs');" style="padding:0.4rem 0.75rem;">📋 Jobs</button>
+              <button class="btn-table-action" onclick="document.getElementById('saTableSelect').value='nodes'; renderSuperAdminTable('nodes');" style="padding:0.4rem 0.75rem;">🌐 City Nodes</button>
+            </div>
+          </div>
+
+          <div class="sa-table-wrapper">
+            <table class="sa-data-table" id="saRecordsTable">
+              <thead id="saTableHeadRow">
+                <!-- Dynamically populated -->
+              </thead>
+              <tbody id="saTableBodyRows">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+          <div class="sa-table-footer">
+            <span id="saTableInfo">Showing 10 of 72 records • Database status: HEALTHY (Green)</span>
+            <button class="btn-text-action" onclick="refreshSuperAdminDatabase()">🔄 Refresh Table</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab View 2: Regional Admins Registry -->
+      <div class="sa-tab-content hidden" id="saViewAdmins">
+        <div class="sa-admins-container">
+          <div class="sa-admins-head">
+            <div>
+              <h3>Regional & District Operational Admin Database</h3>
+              <p>Super Admin provisions district-level administrators responsible for local federations and interaction oversight.</p>
+            </div>
+            <button class="btn-primary" onclick="openNewAdminModal()">+ Provision New District Admin</button>
+          </div>
+          <div class="admins-grid" id="adminsRegistryGrid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab View 3: System Health & Sync -->
+      <div class="sa-tab-content hidden" id="saViewSync">
+        <div class="sa-sync-card">
+          <h3>National Cooperative Federation Distributed Database Health</h3>
+          <p>Real-time heartbeat across all state and district cooperative servers:</p>
+          <div class="nodes-list">
+            <div class="node-row online">
+              <span class="node-indicator">●</span>
+              <div class="node-meta">
+                <strong>Node 01: North-Zone Primary (New Delhi Apex Server)</strong>
+                <span>Latency: 12ms • State: Synchronized • Database: `coop_apex_delhi`</span>
+              </div>
+              <span class="node-status-tag">ACTIVE / SYNCED</span>
+            </div>
+            <div class="node-row online">
+              <span class="node-indicator">●</span>
+              <div class="node-meta">
+                <strong>Node 02: South-Zone Regional Hub (Bengaluru Hub)</strong>
+                <span>Latency: 28ms • State: Synchronized • Database: `coop_south_blr`</span>
+              </div>
+              <span class="node-status-tag">ACTIVE / SYNCED</span>
+            </div>
+            <div class="node-row online">
+              <span class="node-indicator">●</span>
+              <div class="node-meta">
+                <strong>Node 03: West-Zone Regional Hub (Mumbai Hub)</strong>
+                <span>Latency: 24ms • State: Synchronized • Database: `coop_west_mum`</span>
+              </div>
+              <span class="node-status-tag">ACTIVE / SYNCED</span>
+            </div>
+            <div class="node-row standby">
+              <span class="node-indicator">●</span>
+              <div class="node-meta">
+                <strong>Node 04: NIC Disaster Recovery Mirror (Hyderabad DR)</strong>
+                <span>Latency: 35ms • State: Standby Mirror • Scheduled Sync: 00:00 IST</span>
+              </div>
+              <span class="node-status-tag standby-tag">STANDBY MIRROR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- FACE 2: OPERATIONAL ADMIN PORTAL (WORKER & USER INTERACTION LOGS) -->
+    <!-- ============================================================== -->
+    <section class="portal-pane admin-pane hidden" id="adminPortal">
+      <div class="pane-header fed-header">
+        <div class="pane-title-wrap">
+          <div class="badge-role-tag fed-tag">DISTRICT FEDERATION • TIER 2 • OPERATIONAL ADMIN CONSOLE</div>
+          <h2>Operational Admin & Real-Time Interaction & Financial Monitoring Center</h2>
+          <p class="pane-sub">Full transparency into <strong>every interaction & logged detail</strong> of workers and users • Linked Admin Node • <strong>City-wise money transferred & transaction history</strong></p>
+        </div>
+        <div class="fed-kpi-summary">
+          <div class="admin-linked-badge" id="adminLinkedStatusBadge" title="Operational Admin connected directly into the national cooperative mesh">
+            <span class="live-blink-dot" style="background:#10b981;"></span>
+            <span id="adminLinkedNodeName">Admin Node: <strong>Dr. Alok Verma (Delhi South Zone DL-07)</strong></span>
+            <button class="btn-switch-admin-node" onclick="switchAdminJurisdictionNode()" title="Switch linked admin city">⇄ Change City</button>
+          </div>
+          <span class="fed-kpi">City Money Transferred: <strong id="adminCityTotalTransferred">₹4,892,400</strong></span>
+          <span class="fed-kpi">Active Interactions: <strong id="adminLiveInteractionCount">18,340</strong></span>
+          <span class="fed-kpi">Worker Share: <strong>95% Direct</strong></span>
+        </div>
+      </div>
+
+      <!-- Operational Admin View Tabs -->
+      <div class="admin-nav-bar">
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" id="admTabAudits" onclick="switchAdminTab('audits')">
+            <span>📜 Live Worker & User Interaction Logs</span>
+            <span class="live-blink-dot"></span>
+          </button>
+          <button class="admin-tab-btn" id="admTabTransfers" onclick="switchAdminTab('transfers')">
+            <span>💸 Money Transferred & City History</span>
+            <span class="badge-alert-dot" style="background:#10b981;"></span>
+          </button>
+          <button class="admin-tab-btn" id="admTabDispatches" onclick="switchAdminTab('dispatches')">
+            <span>📡 Live Job Dispatches & Links</span>
+          </button>
+          <button class="admin-tab-btn" id="admTabForecast" onclick="switchAdminTab('forecast')">
+            <span>📈 AI Demand Forecasts & Economics</span>
+          </button>
+        </div>
+        <div class="admin-filter-bar">
+          <button class="btn-clear-logs" onclick="clearAuditFilter()">Show All Events</button>
+          <button class="btn-refresh-stream" onclick="refreshAdminAuditLogs()">🔄 Refresh Feed</button>
+        </div>
+      </div>
+
+      <!-- Tab Content 1: Live Worker & User Interaction Audit Log Stream -->
+      <div class="admin-view-content" id="admViewAudits">
+        <div class="audit-stream-card">
+          <div class="audit-head-row">
+            <div>
+              <h3>Worker & User Interaction Ledger (Audit Trail)</h3>
+              <p>Every booking, dispatch ping, doorstep OTP handshake, service completion, and UPI payout is immutably logged with actor identities.</p>
+            </div>
+            <div class="audit-filters-group">
+              <select id="auditActorFilter" class="form-input audit-select" onchange="filterAuditLogs()">
+                <option value="all">All Actors (Users + Workers + System)</option>
+                <option value="user">User / Customer Actions</option>
+                <option value="worker">Worker Terminal Actions</option>
+                <option value="system">System / AI Dispatches</option>
+              </select>
+              <select id="auditTypeFilter" class="form-input audit-select" onchange="filterAuditLogs()">
+                <option value="all">All Event Types</option>
+                <option value="DISPATCH">Job Dispatches & Alerts</option>
+                <option value="OTP">OTP & Security Handshakes</option>
+                <option value="PAYMENT">Payments & Fair Payouts</option>
+                <option value="SOS">Emergency SOS Broadcasts</option>
+              </select>
+              <input type="text" id="auditSearchInput" class="form-input audit-search" placeholder="Search by Job ID, Worker name or User..." oninput="filterAuditLogs()" />
+            </div>
+          </div>
+
+          <!-- Dynamic Interaction Stream Table -->
+          <div class="audit-table-wrapper">
+            <table class="audit-log-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Timestamp</th>
+                  <th style="width: 120px;">Actor / Entity</th>
+                  <th style="width: 110px;">Event Category</th>
+                  <th style="width: 120px;">Reference ID</th>
+                  <th>Interaction Details & State Change</th>
+                  <th style="width: 130px;">Verification / GPS</th>
+                  <th style="width: 90px;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="auditLogsBody">
+                <!-- Dynamically populated from coopsewa_audit_logs -->
+              </tbody>
+            </table>
+          </div>
+          <div class="audit-footer-strip">
+            <span id="auditFooterCount">Displaying latest interactions • SIH-26089 Distributed Audit Protocol Active</span>
+            <button class="btn-text-action" onclick="exportAuditLogCsv()">📥 Export Audit CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: City-Wise Money Transferred & Financial History -->
+      <div class="admin-view-content hidden" id="admViewTransfers">
+        <div class="city-transfers-container">
+          <!-- City Performance & Money Transferred Cards Overview -->
+          <div class="city-summary-cards-grid" id="citySummaryCardsGrid">
+            <!-- Populated dynamically: Delhi, Bengaluru, Mumbai, Hyderabad, Pune, Chennai, Kolkata, Ahmedabad -->
+          </div>
+
+          <!-- Interactive City Filter & Ledger History Card -->
+          <div class="city-ledger-card">
+            <div class="city-ledger-head">
+              <div>
+                <h3 id="cityLedgerTitle">City-Wise Financial Settlement & Money Transfer Ledger</h3>
+                <p>Complete historical ledger of customer settlements, 95% worker account transfers, cooperative fund withholdings, and city-by-city transaction logs.</p>
+              </div>
+              <div class="city-filters-toolbar">
+                <div class="city-selector-group">
+                  <label for="adminCitySelector"><strong>Filter by City:</strong></label>
+                  <select id="adminCitySelector" class="form-input city-select" onchange="onAdminCityFilterChange(this.value)">
+                    <option value="all">🇮🇳 All Cities (National Consolidated View)</option>
+                    <option value="Delhi" selected>📍 New Delhi / NCR Zone (DL-07)</option>
+                    <option value="Bengaluru">📍 Bengaluru Central Zone (KA-01)</option>
+                    <option value="Mumbai">📍 Mumbai Suburban Zone (MH-02)</option>
+                    <option value="Hyderabad">📍 Hyderabad Cyberabad Zone (TS-09)</option>
+                    <option value="Pune">📍 Pune North Zone (MH-12)</option>
+                    <option value="Chennai">📍 Chennai Central Zone (TN-01)</option>
+                    <option value="Kolkata">📍 Kolkata Urban Zone (WB-01)</option>
+                    <option value="Ahmedabad">📍 Ahmedabad Western Zone (GJ-01)</option>
+                  </select>
+                </div>
+                <div class="city-search-group">
+                  <input type="text" id="cityTransferSearch" class="form-input" placeholder="Search by Transaction UTR, Worker, or User..." oninput="filterCityTransferHistory(this.value)" />
+                </div>
+                <button class="btn-export-city-csv" onclick="exportCityTransferCsv()">📥 Export City Ledger</button>
+              </div>
+            </div>
+
+            <!-- City Metrics Spotlight Strip -->
+            <div class="city-spotlight-bar" id="citySpotlightBar">
+              <div class="cs-item">
+                <span class="cs-label">Total Money Settled:</span>
+                <strong class="cs-val" id="csTotalSettled">₹4,892,400</strong>
+              </div>
+              <div class="cs-item">
+                <span class="cs-label">Direct to Workers (95%):</span>
+                <strong class="cs-val text-green" id="csWorkerShare">₹4,647,780</strong>
+              </div>
+              <div class="cs-item">
+                <span class="cs-label">Cooperative Fund (5%):</span>
+                <strong class="cs-val text-amber" id="csCoopShare">₹244,620</strong>
+              </div>
+              <div class="cs-item">
+                <span class="cs-label">Total Completed Gigs:</span>
+                <strong class="cs-val" id="csTotalGigs">11,280 Gigs</strong>
+              </div>
+              <div class="cs-item">
+                <span class="cs-label">Linked Admin Authority:</span>
+                <strong class="cs-val" id="csLinkedAdminName">Dr. Alok Verma</strong>
+              </div>
+            </div>
+
+            <!-- Financial History Table -->
+            <div class="city-transfers-table-wrapper">
+              <table class="city-transfers-table">
+                <thead>
+                  <tr>
+                    <th style="width: 130px;">Txn ID / UTR</th>
+                    <th style="width: 120px;">City & Zone</th>
+                    <th style="width: 140px;">Timestamp</th>
+                    <th>Household User (Sender)</th>
+                    <th>Coop Worker (Beneficiary)</th>
+                    <th style="width: 100px;">Total Fare</th>
+                    <th style="width: 120px; color:#10b981;">Worker 95%</th>
+                    <th style="width: 95px; color:#f59e0b;">Coop 5%</th>
+                    <th style="width: 100px;">Status</th>
+                    <th style="width: 80px;">Audit</th>
+                  </tr>
+                </thead>
+                <tbody id="cityTransfersTableBody">
+                  <!-- Populated dynamically with city transfer transactions -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="city-transfers-footer">
+              <span id="cityTransfersFooterInfo">Showing verified payments settled via NPCI UPI / Direct Cooperative Beneficiary Disbursement Protocol.</span>
+              <button class="btn-refresh-city-feed" onclick="refreshCityTransferData()">🔄 Refresh Live Settlements</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Live Job Dispatches & User-Worker Link Monitor -->
+      <div class="admin-view-content hidden" id="admViewDispatches">
+        <div class="live-dispatch-monitor-card">
+          <div class="dispatch-monitor-head">
+            <div>
+              <h3>Active 7km User-Worker Linked Dispatches</h3>
+              <p>Visual monitor tracking assignments connecting Household Users directly to Cooperative Workers in real time.</p>
+            </div>
+            <div class="live-sync-badge">
+              <span class="pulse-green"></span> Live Channel Active
+            </div>
+          </div>
+          <div class="dispatches-grid" id="adminActiveDispatchesGrid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: AI Forecast & Economics (Original Federation Content preserved) -->
+      <div class="admin-view-content hidden" id="admViewForecast">
+        <!-- AI Demand Forecasting & Seasonal Prediction (PDF Page 2 & 4) -->
+        <div class="forecasting-grid">
+          <div class="forecast-card">
+            <div class="forecast-head">
+              <div>
+                <h3>AI Seasonal Demand Forecast (Time-Series & K-Means)</h3>
+                <p>Predicts monsoon plumbing spikes, summer AC service, and pre-positions registered cooperative workers</p>
+              </div>
+              <div class="forecast-legend">
+                <span class="leg-item"><span class="leg-color monsoon-color"></span> Plumbing Demand</span>
+                <span class="leg-item"><span class="leg-color summer-color"></span> AC Servicing</span>
+                <span class="leg-item"><span class="leg-color electrical-color"></span> Electrical</span>
+              </div>
+            </div>
+
+            <!-- Dynamic SVG Chart for Seasonal Trends -->
+            <div class="seasonal-chart-container">
+              <svg class="trend-chart-svg" viewBox="0 0 800 240" preserveAspectRatio="none">
+                <line x1="60" y1="40" x2="780" y2="40" stroke="#334155" stroke-dasharray="4" />
+                <line x1="60" y1="100" x2="780" y2="100" stroke="#334155" stroke-dasharray="4" />
+                <line x1="60" y1="160" x2="780" y2="160" stroke="#334155" stroke-dasharray="4" />
+                <line x1="60" y1="200" x2="780" y2="200" stroke="#475569" />
+
+                <text x="25" y="45" fill="#94a3b8" font-size="11">High</text>
+                <text x="25" y="105" fill="#94a3b8" font-size="11">Med</text>
+                <text x="25" y="165" fill="#94a3b8" font-size="11">Low</text>
+                <text x="25" y="205" fill="#94a3b8" font-size="11">Base</text>
+
+                <path d="M 60,180 Q 200,175 300,140 T 450,45 T 580,90 T 780,170" fill="none" stroke="#0ea5e9" stroke-width="3.5" />
+                <path d="M 60,190 Q 150,160 260,50 T 380,60 T 520,160 T 780,185" fill="none" stroke="#f59e0b" stroke-width="3.5" />
+                <path d="M 60,140 Q 220,135 400,125 T 600,120 T 780,130" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" />
+
+                <line x1="450" y1="20" x2="450" y2="200" stroke="#ef4444" stroke-width="2" stroke-dasharray="3" />
+                <text x="455" y="32" fill="#ef4444" font-weight="bold" font-size="11">CURRENT: MONSOON SURGE (+210%)</text>
+              </svg>
+              <div class="x-axis-months">
+                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+              </div>
+            </div>
+
+            <!-- AI Pre-positioning Advisory -->
+            <div class="ai-advisory-box">
+              <span class="ai-chip">🤖 AI DISPATCH ADVISORY</span>
+              <p><strong>Predicted Need:</strong> South Delhi and Dwarka zones expect <strong>+180% drain unclogging & water-pump faults</strong> due to forecasted heavy precipitation over next 48h. Recommended action: <em>Auto-incentivize 35 Grade A & B plumbers to pre-position within 2km clusters.</em></p>
+            </div>
+          </div>
+
+          <!-- Comparative Economics: Private Monopolies vs Cooperative Model -->
+          <div class="economic-comparison-card">
+            <h3>Economic Disruption: Fair Payouts</h3>
+            <p>Breakdown of a typical ₹1,000 household service ticket:</p>
+
+            <div class="comp-bars">
+              <div class="comp-col private-col">
+                <span class="col-title">Private Aggregators (Urban Co, etc.)</span>
+                <div class="bar-visual">
+                  <div class="bar-slice cut-commission" style="height: 35%;">35% Commission Cut (₹350)</div>
+                  <div class="bar-slice cut-fees" style="height: 10%;">10% Hidden Platform Fee</div>
+                  <div class="bar-slice worker-payout-private" style="height: 55%;">Worker Gets: ₹550 only</div>
+                </div>
+                <p class="summary-note">❌ Workers lack welfare, pension, or voice</p>
+              </div>
+
+              <div class="comp-col coop-col">
+                <span class="col-title">COOPSEWA (Labour Federation)</span>
+                <div class="bar-visual">
+                  <div class="bar-slice coop-admin" style="height: 5%;">5% Co-op Fee (₹50)</div>
+                  <div class="bar-slice coop-welfare" style="height: 5%;">5% Member Pension / PMSBY (₹50)</div>
+                  <div class="bar-slice worker-payout-coop" style="height: 90%;">Worker Keeps: ₹900 (95% Total)</div>
+                </div>
+                <p class="summary-note">✅ Certified grading, life insurance & cooperative ownership</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================== -->
+  <!-- AUTH MODAL: DUAL LOGIN & REGISTRATION         -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="authModal">
+    <div class="auth-modal-dialog">
+      <button class="btn-close-modal" onclick="closeAuthModal()">✕</button>
+      
+      <div class="auth-modal-header">
+        <div class="auth-badge">COOPSEWA IDENTITY GATEWAY</div>
+        <h3 id="authModalTitle">Sign In to CoopSewa</h3>
+        <p>Select your account role to continue</p>
+      </div>
+
+      <!-- 4-Face Selector Tabs inside Auth -->
+      <div class="auth-role-tabs auth-role-tabs-4">
+        <button class="tab-btn active" id="tabCustomerAuth" onclick="switchAuthTab('customer')">
+          <span>🏠 User</span>
+        </button>
+        <button class="tab-btn" id="tabWorkerAuth" onclick="switchAuthTab('worker')">
+          <span>🛠️ Worker</span>
+        </button>
+        <button class="tab-btn" id="tabAdminAuth" onclick="switchAuthTab('admin')">
+          <span>📊 Admin</span>
+        </button>
+        <button class="tab-btn" id="tabSuperAdminAuth" onclick="switchAuthTab('superadmin')">
+          <span>🏛️ Super Admin</span>
+        </button>
+      </div>
+
+      <!-- Auth Form (Sign In / Sign Up) -->
+      <div class="auth-form-body">
+        <div class="form-toggle-row">
+          <span class="active-subtab" id="subtabLogin" onclick="setAuthMode('login')">Login</span>
+          <span class="inactive-subtab" id="subtabRegister" onclick="setAuthMode('register')">Register New Account</span>
+        </div>
+
+        <div id="authFieldsCustomer" class="auth-field-group">
+          <div class="form-group">
+            <label>Mobile Number (for OTP):</label>
+            <div class="input-with-icon">
+              <span class="flag-icon">🇮🇳 +91</span>
+              <input type="tel" id="custMobileInput" class="form-input" placeholder="98765 43210" value="9876543210" />
+            </div>
+          </div>
+          <div class="form-group hidden" id="custRegisterFields">
+            <label>Full Name:</label>
+            <input type="text" id="custNameInput" class="form-input" placeholder="e.g. Priya Sharma" value="Priya Sharma" />
+            <label class="mt-2">Delivery / Home Address:</label>
+            <input type="text" id="custAddrRegInput" class="form-input" placeholder="e.g. Flat 402, Green Valley Apts" value="Flat 402, Green Valley Apts" />
+          </div>
+        </div>
+
+        <div id="authFieldsWorker" class="auth-field-group hidden">
+          <div class="form-group">
+            <label>Worker Mobile Number:</label>
+            <div class="input-with-icon">
+              <span class="flag-icon">🇮🇳 +91</span>
+              <input type="tel" id="workerMobileInput" class="form-input" placeholder="98111 22334" value="9811122334" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cooperative Federation ID / Society Reg:</label>
+            <input type="text" id="workerCoopIdInput" class="form-input" placeholder="e.g. COOP-DL-2026-8942" value="COOP-DL-2026-8942" />
+          </div>
+          <div class="form-group hidden" id="workerRegisterFields">
+            <label>Full Name:</label>
+            <input type="text" id="workerNameInput" class="form-input" placeholder="e.g. Ramesh Kumar" value="Ramesh Kumar" />
+            <label class="mt-2">Primary Trade / Skill:</label>
+            <select id="workerSkillSelect" class="form-input">
+              <option value="Plumbing & Drainage">Plumbing & Drainage</option>
+              <option value="Emergency Electrical">Emergency Electrical</option>
+              <option value="AC & Refrigeration">AC & Refrigeration</option>
+              <option value="Carpentry & Masonry">Carpentry & Masonry</option>
+              <option value="Domestic Assistance">Domestic Assistance & Care</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="authFieldsAdmin" class="auth-field-group hidden">
+          <div class="form-group">
+            <label>District Admin Username / Email:</label>
+            <input type="text" id="adminUserInput" class="form-input" placeholder="e.g. admin.delhisouth@coopsewa.gov.in" value="admin.delhisouth@coopsewa.gov.in" />
+          </div>
+          <div class="form-group">
+            <label>District Cooperative Passkey:</label>
+            <input type="password" id="adminPassInput" class="form-input" placeholder="••••••••••••" value="coop2026admin" />
+          </div>
+        </div>
+
+        <div id="authFieldsSuperAdmin" class="auth-field-group hidden">
+          <div class="form-group">
+            <label>National Super Admin Master Key / UID:</label>
+            <input type="text" id="superAdminUserInput" class="form-input" placeholder="e.g. superadmin.root@nic.in" value="superadmin.root@nic.in" />
+          </div>
+          <div class="form-group">
+            <label>Cryptographic Master Security Passphrase:</label>
+            <input type="password" id="superAdminPassInput" class="form-input" placeholder="••••••••••••" value="SahkarSamriddhi2026!" />
+          </div>
+        </div>
+
+        <!-- Simulated OTP Step -->
+        <div class="otp-verification-box hidden" id="authOtpSection">
+          <label>Enter 4-Digit One Time Password (OTP):</label>
+          <div class="otp-boxes">
+            <input type="text" maxlength="1" class="otp-digit" value="2" />
+            <input type="text" maxlength="1" class="otp-digit" value="6" />
+            <input type="text" maxlength="1" class="otp-digit" value="0" />
+            <input type="text" maxlength="1" class="otp-digit" value="8" />
+          </div>
+          <small class="otp-resend">OTP auto-detected via SMS simulation (2608)</small>
+        </div>
+
+        <div class="auth-modal-actions">
+          <button class="btn-submit-auth" id="btnSubmitAuth" onclick="submitAuthForm()">
+            <span>Send OTP & Continue</span>
+          </button>
+          <button class="btn-demo-quick" onclick="quickFillDemo()">
+            <span>⚡ Instant Demo Autofill (Household)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- GST-COMPLIANT INVOICE MODAL (PDF Page 2 & 3)   -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="invoiceModal">
+    <div class="invoice-dialog">
+      <div class="invoice-actions-bar no-print">
+        <button class="btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <button class="btn-close-modal" onclick="closeInvoiceModal()">✕</button>
+      </div>
+
+      <!-- Printable GST Tax Invoice Document -->
+      <div class="gst-invoice-paper" id="invoiceDocument">
+        <div class="inv-header">
+          <div class="inv-brand">
+            <h2>COOPSEWA GIG FEDERATION</h2>
+            <p>Administered by National Labour Cooperative Federation</p>
+            <p class="gstin">GSTIN: <strong>07AAAAA0000A1Z5</strong> • HSN Code: 998721</p>
+          </div>
+          <div class="inv-meta">
+            <span class="inv-type">TAX INVOICE</span>
+            <p>Invoice No: <strong id="invNumber">INV-2026-08942</strong></p>
+            <p>Date: <strong id="invDate">06-Sep-2026</strong></p>
+            <p>Place of Supply: <strong>07-Delhi (State Code)</strong></p>
+          </div>
+        </div>
+
+        <hr class="inv-divider" />
+
+        <div class="inv-parties-grid">
+          <div class="party-box">
+            <h4>Billed To (Customer):</h4>
+            <p><strong id="invCustName">Priya Sharma</strong></p>
+            <p id="invCustAddr">Flat 402, Green Valley Apts, Sector 14, New Delhi</p>
+            <p>Mobile: +91 9876543210</p>
+          </div>
+          <div class="party-box">
+            <h4>Certified Service Provider:</h4>
+            <p><strong id="invWorkerName">Ramesh Kumar (Grade A)</strong></p>
+            <p>Coop Reg No: COOP-DL-2026-8942</p>
+            <p>Trade: Monsoon Plumbing & Drainage</p>
+          </div>
+        </div>
+
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th>Description of Gig Service</th>
+              <th>HSN/SAC</th>
+              <th>Base Rate</th>
+              <th>CGST (9%)</th>
+              <th>SGST (9%)</th>
+              <th>Total (INR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong id="invItemTitle">Emergency Pipe Leak & Valve Repair</strong>
+                <br><small>Hyperlocal 2km On-Demand Dispatch • Job #COOP-8921</small>
+              </td>
+              <td>998721</td>
+              <td id="invBaseRate">₹338.98</td>
+              <td id="invCgst">₹30.51</td>
+              <td id="invSgst">₹30.51</td>
+              <td><strong id="invTotalAmt">₹400.00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="inv-summary-wrap">
+          <div class="fair-wage-seal">
+            <span class="seal-icon">🤝</span>
+            <div>
+              <strong>COOPERATIVE FAIR DISBURSAL PROOF:</strong>
+              <p>• Worker Direct Earnings (95%): <strong id="invWorkerRetain">₹380.00</strong></p>
+              <p>• Cooperative Platform Admin (5%): ₹20.00 (Includes ₹10 to Worker Welfare Fund)</p>
+            </div>
+          </div>
+          <div class="inv-totals">
+            <div class="tot-row"><span>Taxable Amount:</span> <span id="invTaxable">₹338.98</span></div>
+            <div class="tot-row"><span>Total GST (18%):</span> <span id="invTotalGst">₹61.02</span></div>
+            <div class="tot-row grand"><span>Total Paid:</span> <span id="invGrandTotal">₹400.00</span></div>
+            <div class="paid-stamp">PAID VIA UPI (RAZORPAY GATEWAY)</div>
+          </div>
+        </div>
+
+        <div class="inv-footer">
+          <p>This is an auto-generated GST-compliant invoice under SIH-26089 Cooperative Platform regulations.</p>
+          <p>Sahkar Se Samriddhi • Ministry of Cooperation, Government of India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- OFFICIAL COOPERATIVE CERTIFICATE MODAL         -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="certificateModal">
+    <div class="certificate-dialog">
+      <div class="invoice-actions-bar no-print">
+        <button class="btn-print" onclick="window.print()">🖨️ Print / Save Certificate</button>
+        <button class="btn-close-modal" onclick="closeCertificateModal()">✕</button>
+      </div>
+
+      <div class="official-cert-paper" id="certPrintArea">
+        <div class="cert-border-outer">
+          <div class="cert-border-inner">
+            
+            <!-- National Emblem & Header -->
+            <div class="cert-header-block">
+              <div class="national-emblem-seal">🏛️</div>
+              <span class="cert-authority">NATIONAL LABOUR COOPERATIVE FEDERATION OF INDIA</span>
+              <span class="cert-ministry">Under Aegis of Ministry of Cooperation • Government of India</span>
+              <span class="cert-sih-tag">SIH-26089 • National Cooperative Gig Worker Certification System</span>
+            </div>
+
+            <div class="cert-title-block">
+              <h2 class="cert-main-title">CERTIFICATE OF COOPERATIVE CRAFTSMANSHIP</h2>
+              <p class="cert-sub-title">This official credential certifies verified competency, on-time delivery, and ethics</p>
+            </div>
+
+            <!-- Recipient Information -->
+            <div class="cert-body-block">
+              <p class="cert-preamble">This is to officially certify that cooperative member</p>
+              <h3 class="cert-recipient-name" id="certMemberName">Ramesh Kumar</h3>
+              <p class="cert-reg-line">Cooperative ID: <strong id="certMemberId">COOP-26089-RK</strong> • Society: <strong id="certMemberSociety">Delhi Labour Coop Federation #41</strong></p>
+
+              <p class="cert-statement">
+                has successfully fulfilled all rigorous practical field evaluation requirements under the National Council for Cooperative Training (NCCT) framework in the trade of:
+              </p>
+              
+              <div class="cert-trade-highlight" id="certTradeName">
+                Monsoon Plumbing & Sanitary Engineering
+              </div>
+
+              <!-- Certificate Awarded Tier -->
+              <div class="cert-award-tier-box">
+                <span class="cert-tier-awarded" id="certTierBadge">GRADE A • MASTER CRAFTSMAN</span>
+                <p class="cert-tier-criteria" id="certTierCriteria">
+                  Verified Threshold: <strong>50+ Completed Verified Gigs</strong> • Current Average Customer Rating: <strong>4.92 / 5.0 ★</strong>
+                </p>
+              </div>
+
+              <!-- Entitlements & Privileges -->
+              <div class="cert-privileges">
+                <strong>Certified Cooperative Entitlements:</strong>
+                <ul id="certPrivilegesList">
+                  <li>✅ Authorized for Hyperlocal 2km Emergency Surge Premium Rates</li>
+                  <li>✅ Pradhan Mantri Suraksha Bima Yojana (PMSBY) ₹2 Lakh Automated Coverage</li>
+                  <li>✅ 0% Interest Tool & Equipment Micro-Credit Facility via Cooperative Bank</li>
+                  <li>✅ Designated Cooperative Mentor & Master Field Trainer</li>
+                </ul>
+              </div>
+
+              <!-- Signatures & Verification Seal -->
+              <div class="cert-signatures-row">
+                <div class="cert-sig-box">
+                  <div class="sig-line"><em>Dr. S. K. Verma</em></div>
+                  <span>Director of Cooperative Training</span>
+                  <small>NCCT, Government of India</small>
+                </div>
+
+                <div class="cert-center-stamp">
+                  <div class="gold-seal-badge">
+                    <span>★ COOPSEWA ★</span>
+                    <small>VERIFIED</small>
+                  </div>
+                  <span class="cert-date-text">Issue Date: <strong id="certIssueDate">06-Sep-2026</strong></span>
+                </div>
+
+                <div class="cert-sig-box">
+                  <div class="sig-line"><em>Anita Sundaram</em></div>
+                  <span>Registrar of Cooperative Societies</span>
+                  <small>Labour Gig Federation Division</small>
+                </div>
+              </div>
+
+              <div class="cert-footer-qr">
+                <span>Digital Verification Hash: <strong id="certHashId">SHA256-8942-COOP-RK-2026</strong> • Verify at: https://cooperation.gov.in/verify</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- DETAILED COOPERATIVE WORKER PROFILE MODAL      -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="workerProfileModal">
+    <div class="worker-profile-dialog">
+      <button class="btn-close-modal" onclick="closeWorkerProfileModal()">✕</button>
+
+      <!-- Profile Header Banner -->
+      <div class="wp-header-hero">
+        <div class="wp-avatar-wrap">
+          <span class="wp-avatar-big" id="wpAvatar">🪚</span>
+        </div>
+        <div class="wp-header-text">
+          <div class="wp-name-verified">
+            <h3 id="wpName">Gurpreet Singh</h3>
+            <span class="badge-verified-seal">✅ NCCT &amp; POLICE VERIFIED</span>
+          </div>
+          <p class="wp-trade-title" id="wpTrade">Master Joiner &amp; Modular Woodwork</p>
+          <div class="wp-society-line">
+            <span class="wp-meta-item">🏛️ Society: <strong id="wpSociety">Delhi Labour Coop Woodcraft Society #12</strong></span>
+            <span class="wp-meta-item">🆔 Member ID: <strong id="wpCoopId">COOP-26089-GS</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accredited Certificate Tier Banner -->
+      <div class="wp-cert-banner">
+        <div class="wp-cert-banner-left">
+          <span class="profile-tier-badge grade-a" id="wpGradeBadge">GRADE A • MASTER CRAFTSMAN</span>
+          <p id="wpGradeDesc"><strong>Accredited Criterion:</strong> &gt; 75 Verified Gigs • Entitlement: <strong>+20% Wage Multiplier</strong></p>
+        </div>
+        <button class="btn-view-official-cert" id="btnWpViewCert">
+          <span>🎓 View Official Certificate</span>
+        </button>
+      </div>
+
+      <!-- Core Metrics Grid -->
+      <div class="wp-metrics-grid">
+        <div class="wpm-card">
+          <span class="wpm-label">Completed Gigs</span>
+          <strong class="wpm-val highlight" id="wpJobsCount">94</strong>
+          <small>Verified by Federation</small>
+        </div>
+        <div class="wpm-card">
+          <span class="wpm-label">Customer Rating</span>
+          <strong class="wpm-val" id="wpRating">4.93 ★</strong>
+          <small>Verified Reviews</small>
+        </div>
+        <div class="wpm-card">
+          <span class="wpm-label">Quality Score</span>
+          <strong class="wpm-val green" id="wpScore">97/100</strong>
+          <small>Top 3% in District</small>
+        </div>
+        <div class="wpm-card">
+          <span class="wpm-label">Experience</span>
+          <strong class="wpm-val" id="wpExp">12 Years</strong>
+          <small>Trade Specialist</small>
+        </div>
+      </div>
+
+      <!-- Profile Body Details -->
+      <div class="wp-body-details">
+        <div class="wp-section-block">
+          <h4>About Craftsman</h4>
+          <p class="wp-bio-text" id="wpBio">Master certified cooperative wood craftsman with 12 years of community service.</p>
+        </div>
+
+        <div class="wp-section-block">
+          <h4>Specializations &amp; Services Offered</h4>
+          <div class="wp-pills-wrap" id="wpSkillsList"></div>
+        </div>
+
+        <div class="wp-section-block">
+          <h4>Verified Professional Tools &amp; Equipment</h4>
+          <div class="wp-tools-wrap" id="wpToolsList"></div>
+        </div>
+
+        <div class="wp-section-block">
+          <h4>Active Cooperative Social Security Entitlements</h4>
+          <div class="wp-benefits-grid">
+            <span class="benefit-chip">🛡️ PMSBY ₹2 Lakh Life Cover (Active)</span>
+            <span class="benefit-chip">🏥 Ayushman Bharat PM-JAY (Enrolled)</span>
+            <span class="benefit-chip">📈 NPS Lite Cooperative Pension (Growing)</span>
+            <span class="benefit-chip">🤝 95% Direct Income Guarantee (Active)</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Fair-Fare Calculation & Live Distance Simulator -->
+        <div class="wp-section-block wp-fare-calc-block">
+          <div class="wp-fare-header">
+            <h4>⚡ Dynamic Fair-Fare Calculation Breakdown</h4>
+            <span class="coop-transparency-seal">🛡️ 100% Algorithmic Transparency</span>
+          </div>
+          <p class="wp-fare-desc">
+            Fare is calculated dynamically from: <strong>Certificate Tier</strong> (<span id="wpFareCertTag">Grade A</span>), 
+            <strong>Ratings &amp; Reviews</strong> (<span id="wpFareRatingTag">4.9★</span>), and 
+            <strong>Distance Traveled</strong>.
+          </p>
+
+          <!-- Interactive Distance Slider inside Profile Modal -->
+          <div class="wp-slider-control">
+            <div class="slider-labels">
+              <span>📍 Distance to Your Home: <strong id="wpSliderDistVal" style="color: var(--primary-saffron-light);">0.5 km</strong> (<span id="wpSliderEtaVal">~5 mins ETA</span>)</span>
+              <span class="rate-per-km-tag">Transit Rate: ₹<span id="wpSliderRatePerKm">25</span>/km</span>
+            </div>
+            <input type="range" id="wpDistanceRange" min="0.2" max="10.0" step="0.1" value="0.5" class="custom-slider" oninput="onWpDistanceSliderChange(this.value)">
+            <div class="slider-ticks">
+              <span>0.2km (Walking)</span>
+              <span>2.0km (Radar)</span>
+              <span>5.0km (Cluster)</span>
+              <span>10.0km (Outer)</span>
+            </div>
+          </div>
+
+          <!-- Itemized Dynamic Receipt Grid -->
+          <div class="wp-fare-receipt-grid" id="wpFareReceipt">
+            <div class="wp-receipt-metric">
+              <span class="lbl">Trade Base</span>
+              <strong class="val" id="wpRcBase">₹380</strong>
+            </div>
+            <div class="wp-receipt-metric">
+              <span class="lbl">Cert Tier</span>
+              <strong class="val green" id="wpRcCert">+₹95</strong>
+            </div>
+            <div class="wp-receipt-metric">
+              <span class="lbl">Rating Factor</span>
+              <strong class="val green" id="wpRcRating">+₹56</strong>
+            </div>
+            <div class="wp-receipt-metric">
+              <span class="lbl">Transit Allowance</span>
+              <strong class="val blue" id="wpRcDist">+₹20</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="wp-footer-actions">
+        <div class="wp-rate-dist-box">
+          <span>Dynamic Total Fare: <strong id="wpRate" class="price-green">₹551</strong></span>
+          <span class="wp-dist-note">📍 Distance: <span id="wpDistance">520m away</span> • 95% direct to worker</span>
+        </div>
+        <button class="btn-dispatch" id="btnWpBookDirect" style="padding: 0.75rem 1.8rem; font-size: 1rem;">
+          <span class="btn-icon">⚡</span>
+          <span>1-Tap Book with Dynamic Fare</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- DYNAMIC FARE MATHEMATICAL BREAKDOWN MODAL     -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="fareBreakdownModal">
+    <div class="fare-dialog">
+      <button class="btn-close-modal" onclick="closeFareBreakdownModal()">✕</button>
+
+      <div class="fare-dialog-header">
+        <div class="fd-avatar-box">
+          <span id="fdAvatar">🪚</span>
+        </div>
+        <div class="fd-header-text">
+          <div class="fd-name-badge">
+            <h3 id="fdWorkerName">Gurpreet Singh</h3>
+            <span class="grade-chip grade-a" id="fdGradeChip">Grade A</span>
+          </div>
+          <p id="fdTradeTitle">Master Joiner &amp; Modular Woodwork</p>
+          <span class="fd-society-sub" id="fdSociety">Delhi Labour Coop Woodcraft Society #12</span>
+        </div>
+      </div>
+
+      <div class="fare-formula-banner">
+        <span class="formula-label">SIH Algorithmic Fair-Fare Formula:</span>
+        <code>Total = (Base × Cert_Tier_Multiplier × Rating_Factor) + (Distance_km × Per_Km_Rate)</code>
+      </div>
+
+      <!-- Distance Testing Slider inside Modal -->
+      <div class="fd-distance-slider-box">
+        <div class="fd-dist-labels">
+          <span>Simulate Distance to Your Location: <strong id="fdSliderKm">0.5 km</strong></span>
+          <span id="fdSliderEta">~5 mins ETA</span>
+        </div>
+        <input type="range" id="fdDistanceSlider" min="0.2" max="10.0" step="0.1" value="0.5" class="custom-slider" oninput="onFdDistanceSliderChange(this.value)" />
+      </div>
+
+      <!-- Step by Step Calculation Breakdown -->
+      <div class="fd-breakdown-steps">
+        <div class="fd-step-card">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h5>Trade Base Wage (Labour Coop Standard)</h5>
+            <p>Guaranteed minimum trade wage defined by the District Cooperative Federation.</p>
+          </div>
+          <div class="step-value" id="fdBaseWage">₹380</div>
+        </div>
+
+        <div class="fd-step-card">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h5>Certificate Tier Multiplier: <strong id="fdCertTierName">Grade A (>75 Gigs)</strong></h5>
+            <p>Accredited NCCT skill certificate multiplier (<span id="fdCertMultVal">1.25x</span>): adds skill guarantee.</p>
+          </div>
+          <div class="step-value green" id="fdCertBonusVal">+₹95</div>
+        </div>
+
+        <div class="fd-step-card">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h5>Quality &amp; Reviews Incentive: <strong id="fdRatingText">4.93 ★ (182 Reviews)</strong></h5>
+            <p>Rating factor (<span id="fdRatingFactorVal">1.12x</span>): rewarding verified customer satisfaction and punctuality.</p>
+          </div>
+          <div class="step-value green" id="fdRatingBonusVal">+₹56</div>
+        </div>
+
+        <div class="fd-step-card">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h5>Distance Traveled &amp; Transit Charge: <strong id="fdDistChargeText">0.5 km @ ₹25/km</strong></h5>
+            <p>Fuel and transit compensation from worker's GPS coordinate to customer premises.</p>
+          </div>
+          <div class="step-value blue" id="fdDistChargeVal">+₹20</div>
+        </div>
+      </div>
+
+      <!-- Total & Cooperative Split -->
+      <div class="fd-summary-card">
+        <div class="fd-total-line">
+          <span>Total Dynamic Fare</span>
+          <strong class="total-big-val" id="fdTotalBig">₹551</strong>
+        </div>
+        <div class="fd-split-banner">
+          <div class="fd-split-item">
+            <span>Worker Direct Share (95%):</span>
+            <strong class="green" id="fdWorkerShareVal">₹523</strong>
+          </div>
+          <div class="fd-split-item">
+            <span>Coop Federation Fund (5%):</span>
+            <strong class="blue" id="fdCoopFeeVal">₹28</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-actions">
+        <button class="btn-dispatch" id="btnFdBookNow" onclick="bookFromFareModal()" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+          ⚡ 1-Tap Book This Worker with This Fare
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
